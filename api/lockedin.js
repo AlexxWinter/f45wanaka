@@ -87,7 +87,13 @@ export default async function handler(req, res) {
     const mcKey = process.env.MAILERCLOUD_API_KEY;
     if (mcKey) {
       try {
-        const listId = process.env.MAILERCLOUD_LIST_ID || 'gvJhCs';
+        // Route to the right list based on how they came in.
+        // New/returning defaults to the existing "F45 Locked In Leads" list (gvJhCs).
+        // Members go to MAILERCLOUD_LIST_MEMBER; if that isn't set yet, they
+        // safely fall back to the new/returning list so no lead is ever lost.
+        const listNew = process.env.MAILERCLOUD_LIST_NEW || process.env.MAILERCLOUD_LIST_ID || 'gvJhCs';
+        const listMember = process.env.MAILERCLOUD_LIST_MEMBER || listNew;
+        const listId = pathway === 'member' ? listMember : listNew;
         const mcRes = await fetch('https://cloudapi.mailercloud.com/v1/contacts', {
           method: 'POST',
           headers: { Authorization: mcKey, 'Content-Type': 'application/json' },
