@@ -82,8 +82,32 @@ export default async function handler(req, res) {
       return res.status(502).json({ ok: false, error: 'Could not send right now. Please try again.' });
     }
 
-    // FOUNDATION STEP 2 (later): push this contact into MailerCloud here,
-    // using its add-contact API + your list ID, once you share the key.
+    // Secondary, best-effort: add the contact to MailerCloud so nurture fires.
+    // Never blocks the form — the email alert above is the source of truth.
+    const mcKey = process.env.MAILERCLOUD_API_KEY;
+    if (mcKey) {
+      try {
+        const listId = process.env.MAILERCLOUD_LIST_ID || 'gvJhCs';
+        const mcRes = await fetch('https://cloudapi.mailercloud.com/v1/contacts', {
+          method: 'POST',
+          headers: { Authorization: mcKey, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            name: name,
+            phone: phone,
+            list_id: listId,
+            contact_type: 'active',
+          }),
+        });
+        if (!mcRes.ok) {
+          const detail = await mcRes.text();
+          // "already exists" is fine — they're already on the list.
+          console.error('MailerCloud sync response', mcRes.status, detail);
+        }
+      } catch (mcErr) {
+        console.error('MailerCloud sync error', mcErr);
+      }
+    }
 
     return res.status(200).json({ ok: true });
   } catch (err) {
