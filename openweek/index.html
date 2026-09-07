@@ -112,6 +112,23 @@
   .fit-visual .stat-label{color:#B9BFD1;font-size:0.83rem;margin-top:6px;font-family:'Space Mono',monospace;}
   .fine-print{color:var(--ink-soft);font-size:0.8rem;font-family:'Space Mono',monospace;}
 
+  .timetable{background:#fff;}
+  .tt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;}
+  .tt-card{border:2px solid var(--navy);padding:20px 18px;background:var(--cream);}
+  .tt-card .day{font-family:'Anton',sans-serif;font-size:1.3rem;text-transform:uppercase;margin-bottom:10px;}
+  .tt-card .times{font-family:'Space Mono',monospace;font-size:0.82rem;color:var(--ink-soft);line-height:1.7;margin-bottom:12px;}
+  .tt-tag{
+    display:inline-block;font-family:'Space Mono',monospace;font-size:0.7rem;font-weight:700;
+    letter-spacing:0.05em;text-transform:uppercase;padding:5px 10px;
+  }
+  .tt-tag.hybrid{background:var(--navy);color:var(--mustard);}
+  .tt-tag.strength{background:var(--red);color:#fff;}
+  .tt-tag.cardio{background:var(--mustard);color:var(--navy);}
+  .tt-legend{display:flex;flex-wrap:wrap;gap:24px;margin-top:28px;justify-content:center;}
+  .tt-legend-item{display:flex;align-items:center;gap:10px;max-width:260px;}
+  .tt-legend-item p{font-size:0.86rem;color:var(--ink-soft);}
+  .tt-legend-item p strong{color:var(--ink);}
+
   .scarcity{background:var(--red);color:#fff;text-align:center;padding:20px 0;border-top:2px solid var(--navy);border-bottom:2px solid var(--navy);}
   .scarcity .wrap{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;font-family:'Space Mono',monospace;font-size:0.85rem;letter-spacing:0.02em;text-transform:uppercase;}
   .scarcity .divider{opacity:0.5;}
@@ -196,7 +213,7 @@
   <div class="wrap">
     <div class="proof-item"><strong>45 min</strong>full session</div>
     <div class="proof-item"><strong>5</strong>class times, Mon–Fri*</div>
-    <div class="proof-item"><strong>2×</strong>Sat + Sun sessions</div>
+    <div class="proof-item"><strong>1 · 2</strong>Sat & Sun sessions</div>
     <div class="proof-item"><strong>0</strong>experience needed</div>
     <div class="proof-item"><strong>3</strong>classes, free</div>
   </div>
@@ -277,7 +294,68 @@
         <div class="stat-label">HOURS OF COACHED TRAINING DELIVERED IN WĀNAKA THIS YEAR</div>
       </div>
     </div>
-    <p class="fine-print" style="text-align:center;margin-top:28px;">*Class times are subject to change, but currently Mon–Fri 5:25am, 6:20am, 7:15am, 9:05am and 5:15pm. Sat 6:50am &amp; 8:00am. Sun 7:30am &amp; 8:30am.</p>
+    <p class="fine-print" style="text-align:center;margin-top:28px;">*Class times are subject to change. Full weekly timetable below.</p>
+  </div>
+</section>
+
+<section class="timetable" id="timetable">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Open Invite · 14–20 Sept</div>
+      <h2>The Full Timetable</h2>
+    </div>
+    <div class="tt-grid">
+      <div class="tt-card">
+        <div class="day">Mon</div>
+        <div class="times">5:25am<br>6:20am<br>7:15am<br>9:05am<br>5:15pm</div>
+        <span class="tt-tag hybrid">Hybrid</span>
+      </div>
+      <div class="tt-card">
+        <div class="day">Tue</div>
+        <div class="times">5:25am<br>6:20am<br>7:15am<br>9:05am<br>5:15pm</div>
+        <span class="tt-tag strength">Strength</span>
+      </div>
+      <div class="tt-card">
+        <div class="day">Wed</div>
+        <div class="times">5:25am<br>6:20am<br>7:15am<br>9:05am<br>5:15pm</div>
+        <span class="tt-tag cardio">Cardio</span>
+      </div>
+      <div class="tt-card">
+        <div class="day">Thu</div>
+        <div class="times">5:25am<br>6:20am<br>7:15am<br>9:05am<br>5:15pm</div>
+        <span class="tt-tag strength">Strength</span>
+      </div>
+      <div class="tt-card">
+        <div class="day">Fri</div>
+        <div class="times">5:25am<br>6:20am<br>7:15am<br>9:05am</div>
+        <span class="tt-tag hybrid">Hybrid</span>
+      </div>
+      <div class="tt-card">
+        <div class="day">Sat</div>
+        <div class="times">8:00am</div>
+        <span class="tt-tag hybrid">Hybrid</span>
+      </div>
+      <div class="tt-card">
+        <div class="day">Sun</div>
+        <div class="times">7:30am<br>8:30am</div>
+        <span class="tt-tag strength">Strength</span>
+      </div>
+    </div>
+    <div class="tt-legend">
+      <div class="tt-legend-item">
+        <span class="tt-tag hybrid">Hybrid</span>
+        <p>A mix of strength and cardio in the one session, tailored to your goals.</p>
+      </div>
+      <div class="tt-legend-item">
+        <span class="tt-tag strength">Strength</span>
+        <p>Weighted and bodyweight work, building power and control.</p>
+      </div>
+      <div class="tt-legend-item">
+        <span class="tt-tag cardio">Cardio</span>
+        <p>Heart rate up, output-focused, built to make you sweat.</p>
+      </div>
+    </div>
+    <p class="fine-print" style="text-align:center;margin-top:24px;">Class times and styles are subject to change.</p>
   </div>
 </section>
 
