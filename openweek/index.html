@@ -38,6 +38,10 @@
   }
   .crease{position:absolute;background:rgba(0,0,0,0.05);pointer-events:none;z-index:1;}
 
+  .sold-out-banner{background-color:var(--navy);color:var(--mustard);text-align:center;padding:12px 16px;}
+  .sold-out-banner p{margin:0;font-family:'Space Mono',monospace;font-size:0.82rem;letter-spacing:0.02em;text-transform:uppercase;}
+  .sold-out-banner strong{color:#fff;}
+
   nav{position:sticky;top:0;z-index:60;background:rgba(243,234,214,0.94);backdrop-filter:blur(8px);border-bottom:2px solid var(--navy);}
   nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
   .logo{font-family:'Anton',sans-serif;font-size:1.15rem;letter-spacing:0.01em;}
@@ -177,10 +181,14 @@
 </head>
 <body>
 
+<div class="sold-out-banner">
+  <p><strong>Free passes have sold out.</strong> 3 classes now available for $30, pay in studio.</p>
+</div>
+
 <nav>
   <div class="wrap">
     <div class="logo">F45 Wānaka</div>
-    <a href="#claim" class="nav-cta">Claim Your Pass</a>
+    <a href="#claim" class="nav-cta">Reserve Your Pass</a>
   </div>
 </nav>
 
@@ -193,7 +201,7 @@
 
     <div class="hero-headline">
       <h1>3 Sessions</h1>
-      <h1>For $0.00</h1>
+      <h1>For $30</h1>
       <img class="badge-center" src="img/f45-badge.png" alt="F45 — Team Training, Life Changing" width="500" height="500">
     </div>
 
@@ -201,7 +209,7 @@
     <div class="tag-row">
       <span>Strength. Cardio. Hybrid.</span>
     </div>
-    <p class="hero-subline">Secure your pass, train next week.</p>
+    <p class="hero-subline">Secure your spot, pay $30 in studio.</p>
 
     <div class="hero-bottom">
       <a href="#claim" class="btn-outline">Grab Your Pass</a>
@@ -215,7 +223,7 @@
     <div class="proof-item"><strong>5</strong>class times, Mon–Fri*</div>
     <div class="proof-item"><strong>1 · 2</strong>Sat & Sun sessions</div>
     <div class="proof-item"><strong>0</strong>experience needed</div>
-    <div class="proof-item"><strong>3</strong>classes, free</div>
+    <div class="proof-item"><strong>3</strong>classes, $30</div>
   </div>
 </div>
 
@@ -229,17 +237,17 @@
       <div class="step">
         <span class="num">01</span>
         <h3>Fill in your details</h3>
-        <p>Takes 10 seconds, name, email and mobile. No card details, no commitment.</p>
+        <p>Takes 10 seconds, name, email and mobile. No card details needed online.</p>
       </div>
       <div class="step">
         <span class="num">02</span>
-        <h3>Get your pass</h3>
-        <p>Your 3-class pass is on its way to you, no waiting, no queue.</p>
+        <h3>We confirm your spot</h3>
+        <p>Your reservation's locked in, pay the $30 when you come into the studio.</p>
       </div>
       <div class="step">
         <span class="num">03</span>
         <h3>Train, 14–20 September</h3>
-        <p>Use your 3 free classes any time that week, coached sessions, morning or evening, no experience required.</p>
+        <p>Use your 3 classes any time that week, coached sessions, morning or evening, no experience required.</p>
       </div>
     </div>
   </div>
@@ -361,11 +369,11 @@
 
 <div class="scarcity">
   <div class="wrap">
-    <span>Passes are live</span>
+    <span>Free passes sold out</span>
     <span class="divider">|</span>
     <span>Open Invite runs 14–20 Sept</span>
     <span class="divider">|</span>
-    <span>Limited passes available</span>
+    <span>$30 for 3 classes, available now</span>
   </div>
 </div>
 
@@ -377,8 +385,8 @@
     </div>
     <div class="faq-list">
       <div class="faq-item">
-        <h3>Is this actually free, or is there a catch?</h3>
-        <p>Three classes, completely free, no card details required. Fill in your details and your pass is on its way, it's not a booking or a commitment.</p>
+        <h3>How much does it cost?</h3>
+        <p>Free passes sold out, but 3 classes are still available for $30, payable in studio when you come in. Fill in your details below and we'll confirm your reservation, no card details or online payment required.</p>
       </div>
       <div class="faq-item">
         <h3>What if I can't make three sessions in the week?</h3>
@@ -402,17 +410,17 @@
 
 <section class="final-cta" id="claim">
   <div class="wrap">
-    <h2>Claim Your Pass</h2>
-    <p class="lede">Fill in your details below and your pass is on its way.</p>
+    <h2>Reserve Your Pass</h2>
+    <p class="lede">Fill in your details below and we'll confirm your spot, pay $30 in studio.</p>
     <form class="hero-form waitlist-form" data-form="hero" novalidate>
       <input type="text" name="name" placeholder="Your name" aria-label="Name" required>
       <input type="email" name="email" placeholder="you@email.com" aria-label="Email" required>
       <input type="tel" name="phone" placeholder="021 123 4567" aria-label="Mobile" required>
       <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button type="submit">Claim My Pass</button>
+      <button type="submit">Reserve My Pass</button>
       <p class="form-status" role="status" aria-live="polite"></p>
     </form>
-    <p class="fine-print">Takes about 10 seconds. Your pass details will be sent straight to you.</p>
+    <p class="fine-print">Takes about 10 seconds. We'll confirm your reservation by email and text, pay $30 when you arrive.</p>
   </div>
 </section>
 
@@ -443,7 +451,7 @@
 
       button.disabled = true;
       var originalLabel = button.textContent;
-      button.textContent = 'Claiming…';
+      button.textContent = 'Reserving…';
 
       fetch('/api/openweek', {
         method: 'POST',
@@ -454,7 +462,7 @@
         .then(function (result) {
           if (!result.ok) throw new Error((result.json && result.json.error) || 'Something went wrong.');
           form.classList.add('done');
-          status.textContent = "Nice one, your pass is on its way. Keep an eye on your email and texts.";
+          status.textContent = "Nice one, your spot's reserved. Pay $30 in studio when you come in.";
           status.classList.add('ok');
         })
         .catch(function (err) {
