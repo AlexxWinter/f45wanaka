@@ -24,9 +24,20 @@
     <h3>Register your interest</h3>
     <div class="hf-sub">40 spots &middot; testing capacity is real</div>
     <form class="f54form" novalidate>
-      <div class="frow"><label>Name</label><input name="name" type="text" autocomplete="name" required></div>
+      <div class="frow"><label>First name</label><input name="firstName" type="text" autocomplete="given-name" required></div>
+      <div class="frow"><label>Last name</label><input name="lastName" type="text" autocomplete="family-name" required></div>
       <div class="frow"><label>Email</label><input name="email" type="email" autocomplete="email" required></div>
-      <div class="frow"><label>Phone</label><input name="phone" type="tel" autocomplete="tel" required></div>
+      <div class="frow"><label>Phone number</label><input name="phone" type="tel" autocomplete="tel" required></div>
+      <div class="frow"><label>How did you hear about us?</label><select name="source">
+        <option value="" selected>Select one&hellip;</option>
+        <option value="I'm a member">I'm a member</option>
+        <option value="Friend">Friend</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Facebook">Facebook</option>
+        <option value="Email">Email</option>
+        <option value="Poster">Poster</option>
+        <option value="Other">Other</option>
+      </select></div>
       <label class="consent"><input type="checkbox" name="consent" value="true" required><span>I'm happy for F45 W&#257;naka to contact me about F-54.</span></label>
       <div class="fhp"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
       <button type="submit" class="btn submit">Register my interest</button>
@@ -40,7 +51,7 @@
   <div class="stat"><div class="n">54</div><div class="l">Days, 12 Oct &ndash; 4 Dec</div></div>
   <div class="stat"><div class="n">3</div><div class="l">Tracks to choose from</div></div>
   <div class="stat"><div class="n">2</div><div class="l">Tests, everyone gets both</div></div>
-  <div class="stat"><div class="n">$108</div><div class="l">Early bird, first 20 spots</div></div>
+  <div class="stat"><div class="n">$108<span style="font-size:1.1rem;vertical-align:super;">*</span></div><div class="l">Early bird, first 20 spots</div></div>
 </div></div>
 
 <section class="cream"><div class="wrap">
@@ -116,6 +127,7 @@
     <div class="price best">
       <div class="amt">$108<sup style="font-size:1.4rem;color:var(--red);top:-1.4rem;">*</sup></div>
       <div class="lab">Early bird &middot; first 20 spots</div>
+      <div class="sub" style="color:var(--red);font-weight:700;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.04em;font-size:12px;margin-top:4px;">20 / 20 spots available</div>
       <div class="incl">
         <b>&#10003;</b> VALD performance testing, start &amp; finish<br>
         <b>&#10003;</b> Evolt 360 body scan, start &amp; finish<br>
@@ -125,7 +137,7 @@
       <div class="sub" style="margin-top:14px;">*$2 a day for 54 days</div>
     </div>
     <div class="price">
-      <div class="amt">$135</div>
+      <div class="amt">$135<sup style="font-size:1.4rem;color:var(--red);top:-1.4rem;">*</sup></div>
       <div class="lab">After the first 20</div>
       <div class="incl">
         <b>&#10003;</b> Everything above, same testing,<br>same coaching, same workshop
@@ -133,7 +145,7 @@
       <div class="sub" style="margin-top:14px;">$2.50 a day for 54 days</div>
     </div>
   </div>
-  <p class="fine" style="text-align:center;margin-top:20px;">No add-ons, no surprises, either way &middot; plus your weekly membership.</p>
+  <p class="fine" style="text-align:center;margin-top:20px;">*Plus your regular weekly membership payment &middot; no add-ons, no surprises either way.</p>
   <p style="text-align:center;font-family:'Work Sans',sans-serif;font-size:14px;color:var(--ink-soft);font-weight:500;margin-top:8px;">Membership options: 2 / week $44pw &middot; 3 / week $55pw &middot; unlimited $66pw</p>
 </div></section>
 
@@ -166,17 +178,20 @@
   <p class="lead">Testing capacity is capped at 40. Pop your details in and we'll be in touch with everything you need to lock in your spot.</p>
   <div class="form-wrap">
     <form class="f54form" novalidate>
-      <div class="frow"><label>Name</label><input name="name" type="text" autocomplete="name" required></div>
+      <div class="frow"><label>First name</label><input name="firstName" type="text" autocomplete="given-name" required></div>
+      <div class="frow"><label>Last name</label><input name="lastName" type="text" autocomplete="family-name" required></div>
       <div class="frow"><label>Email</label><input name="email" type="email" autocomplete="email" required></div>
-      <div class="frow"><label>Phone</label><input name="phone" type="tel" autocomplete="tel" required></div>
-      <div class="frow"><label>Leaning toward a track? (optional)</label>
-        <div class="trackpick">
-          <label><input type="radio" name="track" value="Power"><span>Power</span></label>
-          <label><input type="radio" name="track" value="Lean"><span>Lean</span></label>
-          <label><input type="radio" name="track" value="Athlete"><span>Athlete</span></label>
-          <label><input type="radio" name="track" value="Not sure"><span>Not sure</span></label>
-        </div>
-      </div>
+      <div class="frow"><label>Phone number</label><input name="phone" type="tel" autocomplete="tel" required></div>
+      <div class="frow"><label>How did you hear about us?</label><select name="source">
+        <option value="" selected>Select one&hellip;</option>
+        <option value="I'm a member">I'm a member</option>
+        <option value="Friend">Friend</option>
+        <option value="Instagram">Instagram</option>
+        <option value="Facebook">Facebook</option>
+        <option value="Email">Email</option>
+        <option value="Poster">Poster</option>
+        <option value="Other">Other</option>
+      </select></div>
       <label class="consent"><input type="checkbox" name="consent" value="true" required><span>I'm happy for F45 W&#257;naka to contact me about F-54.</span></label>
       <div class="fhp"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
       <button type="submit" class="btn submit">Register my interest</button>
@@ -200,16 +215,15 @@ document.querySelectorAll('form.f54form').forEach(function(form){
   form.addEventListener('submit',function(e){
     e.preventDefault(); if(err){err.style.display='none';}
     var g=function(n){var el=form.querySelector('[name="'+n+'"]');return el?el.value.trim():'';};
-    var tr=form.querySelector('input[name="track"]:checked');
-    var data={name:g('name'),email:g('email'),phone:g('phone'),track:tr?tr.value:'',consent:form.querySelector('input[name="consent"]').checked,company:g('company')};
-    if(!data.name||!data.email||!data.phone||!data.consent){if(err){err.textContent='Please add your name, email and phone, and tick the box.';err.style.display='block';}return;}
+    var data={firstName:g('firstName'),lastName:g('lastName'),email:g('email'),phone:g('phone'),source:g('source'),consent:form.querySelector('input[name="consent"]').checked,company:g('company')};
+    if(!data.firstName||!data.lastName||!data.email||!data.phone||!data.consent){if(err){err.textContent='Please fill in your name, email and phone, and tick the box.';err.style.display='block';}return;}
     var old=btn.textContent; btn.disabled=true; btn.textContent='Sending...';
     fetch('/api/f54',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
       .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j};});})
       .then(function(res){
         if(!res.ok||!res.j.ok){throw new Error((res.j&&res.j.error)||'Something went wrong.');}
         form.style.display='none';
-        if(thanks){var m=thanks.querySelector('.tmsg'); if(m){m.textContent='Thanks '+data.name.split(' ')[0]+", we've got your details and a coach will be in touch.";} thanks.style.display='block';}
+        if(thanks){var m=thanks.querySelector('.tmsg'); if(m){m.textContent='Thanks '+data.firstName+", we've got your details and a coach will be in touch.";} thanks.style.display='block';}
       })
       .catch(function(er){if(err){err.textContent=er.message||'Could not send. Please try again.';err.style.display='block';} btn.disabled=false; btn.textContent=old;});
   });
