@@ -15,17 +15,19 @@ export default async function handler(req, res) {
   }
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-    const name = String(body.name || '').trim();
+    const firstName = String(body.firstName || '').trim();
+    const lastName = String(body.lastName || '').trim();
+    const name = (firstName + ' ' + lastName).trim();
     const email = String(body.email || '').trim();
     const phone = String(body.phone || '').trim();
-    const track = String(body.track || '').trim();
+    const source = String(body.source || '').trim();
     const consent = body.consent === true || body.consent === 'true' || body.consent === 'on';
     const honeypot = String(body.company || '').trim();
 
     if (honeypot) return res.status(200).json({ ok: true }); // bot trap
 
-    if (!name || !email || !phone || !consent) {
-      return res.status(400).json({ ok: false, error: 'Please add your name, email and phone, and tick the box.' });
+    if (!firstName || !lastName || !email || !phone || !consent) {
+      return res.status(400).json({ ok: false, error: 'Please fill in your name, email and phone, and tick the box.' });
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return res.status(400).json({ ok: false, error: "That email doesn't look right." });
@@ -37,7 +39,7 @@ export default async function handler(req, res) {
     const to = process.env.ALERT_TO || 'wanaka@f45training.co.nz';
     const from = process.env.ALERT_FROM || 'F45 Wanaka F-54 <onboarding@resend.dev>';
     const when = new Date().toLocaleString('en-NZ', { timeZone: 'Pacific/Auckland' });
-    const trackLabel = track || 'Not specified';
+    const heard = source || 'Not specified';
 
     const html = `
       <div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0 auto;color:#1B2A46">
@@ -47,13 +49,13 @@ export default async function handler(req, res) {
             <tr><td style="padding:6px 0;color:#5A6478;width:90px">Name</td><td style="padding:6px 0;font-weight:bold">${esc(name)}</td></tr>
             <tr><td style="padding:6px 0;color:#5A6478">Email</td><td style="padding:6px 0"><a href="mailto:${esc(email)}" style="color:#C33A2E">${esc(email)}</a></td></tr>
             <tr><td style="padding:6px 0;color:#5A6478">Phone</td><td style="padding:6px 0"><a href="tel:${esc(phone)}" style="color:#C33A2E">${esc(phone)}</a></td></tr>
-            <tr><td style="padding:6px 0;color:#5A6478">Track</td><td style="padding:6px 0">${esc(trackLabel)}</td></tr>
+            <tr><td style="padding:6px 0;color:#5A6478">Heard via</td><td style="padding:6px 0">${esc(heard)}</td></tr>
             <tr><td style="padding:6px 0;color:#5A6478">Consent</td><td style="padding:6px 0">Yes</td></tr>
             <tr><td style="padding:6px 0;color:#5A6478">Received</td><td style="padding:6px 0">${esc(when)} (NZ)</td></tr>
           </table>
         </div>
       </div>`;
-    const text = `New F-54 interest\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nTrack: ${trackLabel}\nConsent: Yes\nReceived: ${when} (NZ)`;
+    const text = `New F-54 interest\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nHeard via: ${heard}\nConsent: Yes\nReceived: ${when} (NZ)`;
 
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
