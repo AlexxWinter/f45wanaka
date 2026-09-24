@@ -225,3 +225,7 @@ section.white .ttc{background:var(--cream);}
 /* select dropdown to match form inputs */
 .frow select{width:100%;font-family:'Work Sans',sans-serif;font-size:15px;padding:14px 38px 14px 15px;background:var(--cream);border:2px solid var(--navy);color:var(--ink);outline:none;transition:.12s;-webkit-appearance:none;appearance:none;border-radius:0;cursor:pointer;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%231B2A46' stroke-width='2' fill='none'/></svg>");background-repeat:no-repeat;background-position:right 15px center;}
 .frow select:focus{border-color:var(--red);background-color:#fff;box-shadow:3px 3px 0 var(--red);}
+
+.feats.four{grid-template-columns:repeat(4,1fr);}
+@media(max-width:900px){.feats.four{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.feats.four{grid-template-columns:1fr;}}
