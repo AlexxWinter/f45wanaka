@@ -76,7 +76,7 @@ export default async function handler(req, res) {
         const mc = await fetch('https://cloudapi.mailercloud.com/v1/contacts', {
           method: 'POST',
           headers: { Authorization: mcKey, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, name, phone, list_id: mcList, contact_type: 'active' }),
+          body: JSON.stringify({ email, name: firstName, last_name: lastName, phone, list_id: mcList, contact_type: 'active' }),
         });
         if (!mc.ok) console.error('MailerCloud sync', mc.status, await mc.text());
       } catch (e) { console.error('MailerCloud error', e); }
