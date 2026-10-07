@@ -89,6 +89,10 @@ section.white .ttc{background:var(--cream);}
 .price{border:2px solid var(--navy);background:#fff;padding:32px 24px;text-align:center;position:relative;}
 .price.best{background:var(--cream);}
 .price.best:before{content:"Best value";position:absolute;top:-13px;left:20px;background:var(--red);color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:4px 10px;border:2px solid var(--navy);}
+.price.soldout{background:#EDEBE6;border-color:rgba(27,42,70,0.3);opacity:.7;}
+.price.soldout .amt{color:var(--ink-soft);text-decoration:line-through;}
+.price.soldout .lab,.price.soldout .incl,.price.soldout .incl b{color:var(--ink-soft);}
+.soldtag{position:absolute;top:-13px;left:20px;background:var(--ink-soft);color:#fff;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:4px 10px;border:2px solid var(--navy);}
 .price .amt{font-family:'Anton',Impact,sans-serif;font-size:3.4rem;color:var(--navy);line-height:1;}
 .price .amt small{font-family:'Space Mono',monospace;font-size:12px;color:var(--ink-soft);}
 .price .lab{font-family:'Work Sans',sans-serif;font-weight:600;font-size:14px;margin-top:10px;}
