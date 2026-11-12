@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free 3 class pass &mdash; F45 W&#257;naka</title>
+<meta name="description" content="Claim your free 3 class pass at F45 W&#257;naka.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+<style>
+  .fhero{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-bottom:3px solid var(--navy);}
+  .fhero .wrap{position:relative;z-index:2;max-width:640px;padding-top:24px;padding-bottom:34px;}
+  .fhead{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;}
+  .fhead .brand{font-family:'Anton',Impact,sans-serif;font-size:1.25rem;letter-spacing:.02em;color:#fff;text-transform:uppercase;}
+  .fhead .badge{width:60px;height:60px;flex:none;}
+  .fpill{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mustard);border:2px solid var(--mustard);padding:7px 13px;margin-bottom:16px;}
+  .fhero h1{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;line-height:.92;font-size:clamp(2.6rem,10vw,4rem);letter-spacing:.005em;margin:0;}
+  .fhero .sub{font-family:'Work Sans',sans-serif;font-size:16px;font-weight:500;color:#EAD9C2;margin:16px 0 0;max-width:440px;line-height:1.5;}
+  .fhero.center .wrap{text-align:center;}
+  .fhero.center .fhead{justify-content:center;position:relative;}
+  .fhero.center .fhead .badge{position:absolute;right:0;top:50%;transform:translateY(-50%);}
+  .fhero.center .sub{margin-left:auto;margin-right:auto;}
+  .ftext{font-family:'Work Sans',sans-serif;}
+  h1,h2,h3{font-family:'Anton',Impact,sans-serif;font-weight:400;}
+
+  .formsec{background:var(--cream);}
+  .formsec .wrap{max-width:480px;}
+  .thanksline{font-family:'Work Sans',sans-serif;font-size:15px;font-weight:600;color:var(--red);text-align:center;margin:0 0 22px;}
+  .card{background:#fff;border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);padding:28px 24px;}
+  .card h2{color:var(--navy);font-size:1.5rem;line-height:1;margin:0 0 4px;text-transform:uppercase;}
+  .card .lede2{font-family:'Work Sans',sans-serif;font-size:14px;color:var(--ink-soft);margin:0 0 20px;line-height:1.5;}
+  .frow label{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);display:block;margin-bottom:7px;}
+  .privacy{font-family:'Work Sans',sans-serif;font-size:12px;color:var(--ink-soft);line-height:1.5;margin:16px 0 0;}
+  .fthanks{text-align:center;}
+  .fine{font-family:'Work Sans',sans-serif;font-size:11px;color:var(--ink-soft);line-height:1.6;margin:22px auto 0;max-width:480px;text-align:center;}
+  .fine span{display:block;}
+</style>
+</head><body>
+<header class="fhero center"><div class="wrap">
+  <div class="fhead">
+    <span class="brand">F45 W&#257;naka</span>
+    <img class="badge" src="/img/f45-badge.png" alt="F45 &mdash; Team Training, Life Changing" width="500" height="500">
+  </div>
+  <div class="fpill">W&#257;naka Primary School Twilight Fair</div>
+  <h1>Claim your free<br>3 class pass</h1>
+  <p class="sub">Three coached 45 minute sessions at F45 W&#257;naka. On us.</p>
+</div></header>
+<section class="formsec"><div class="wrap">
+  <p class="thanksline">Thanks for stopping by to see us at the fair &#128588;</p>
+  <div class="card">
+    <form class="twform" novalidate>
+      <h2>Your pass</h2>
+      <p class="lede2">Pop your details in and we'll send it straight to your inbox.</p>
+      <div class="frow"><label>Name</label><input name="name" type="text" autocomplete="name" required></div>
+      <div class="frow"><label>Email</label><input name="email" type="email" autocomplete="email" required></div>
+      <div class="frow"><label>Phone number</label><input name="phone" type="tel" autocomplete="tel" required></div>
+      <label class="consent"><input type="checkbox" name="consent" value="true" required><span>I'm happy for F45 W&#257;naka to contact me about my pass and our programs.</span></label>
+      <div class="fhp"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+      <button type="submit" class="btn submit" style="width:100%;">Claim my pass</button>
+      <div class="ferr"></div>
+      <p class="privacy">We only use these details to send your pass and to contact you about F45 W&#257;naka. We won't share them with anyone else, and you can ask us to remove them at any time.</p>
+    </form>
+    <div class="fthanks">
+      <h2>Your pass is on its way.</h2>
+      <p class="tmsg">Thanks, check your email for what to do next.</p>
+    </div>
+  </div>
+  <p class="fine">
+    <span>Pass must be commenced by 31 January 2027.</span>
+    <span>One pass per person. For people new to F45 W&#257;naka.</span>
+  </p>
+</div></section>
+<div class="foot"><div class="wrap">
+<div class="fbrand">F45 W&#257;naka</div>
+<div class="vals">Consistency, effort and connection.</div>
+<div>Find the team at the fair, Saturday 14 November, 3 to 7pm.<br>
+<a href="mailto:wanaka@f45training.co.nz">wanaka@f45training.co.nz</a></div>
+<div class="fmuted">&copy; 2026 F45 W&#257;naka</div>
+</div></div>
+<script>
+document.querySelectorAll('form.twform').forEach(function(form){
+  var card=form.parentNode, err=card.querySelector('.ferr'), thanks=card.querySelector('.fthanks'), btn=form.querySelector('button[type=submit]');
+  form.addEventListener('submit',function(e){
+    e.preventDefault(); if(err){err.style.display='none';}
+    var g=function(n){var el=form.querySelector('[name="'+n+'"]');return el?el.value.trim():'';};
+    var data={name:g('name'),email:g('email'),phone:g('phone'),consent:form.querySelector('input[name="consent"]').checked,company:g('company')};
+    if(!data.name||!data.email||!data.phone){if(err){err.textContent='Please fill in your name, email and phone.';err.style.display='block';}return;}
+    if(!data.consent){if(err){err.textContent='Please tick the box so we can send your pass.';err.style.display='block';}return;}
+    var old=btn.textContent; btn.disabled=true; btn.textContent='Sending...';
+    fetch('/api/twilight',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+      .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j};});})
+      .then(function(res){
+        if(!res.ok||!res.j.ok){throw new Error((res.j&&res.j.error)||'Something went wrong.');}
+        var first=data.name.split(' ')[0];
+        form.style.display='none';
+        if(thanks){var h=thanks.querySelector('h2'); if(h){h.textContent='Thanks '+first+'.';} var m=thanks.querySelector('.tmsg'); if(m){m.textContent='Your pass is on its way. Check your email for what to do next.';} thanks.style.display='block';}
+      })
+      .catch(function(er){if(err){err.textContent=er.message||'Could not send. Please try again.';err.style.display='block';} btn.disabled=false; btn.textContent=old;});
+  });
+});
+</script>
+</body></html>
