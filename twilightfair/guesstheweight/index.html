@@ -30,6 +30,12 @@
   .guesswrap{position:relative;}
   .guesswrap input{width:100%;font-family:'Anton',Impact,sans-serif;font-size:30px;padding:16px 70px 16px 16px;background:var(--mustard);border:2px solid var(--navy);color:var(--navy);outline:none;box-shadow:4px 4px 0 var(--navy);-webkit-appearance:none;letter-spacing:.02em;}
   .guesswrap .unit{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:var(--navy);opacity:.7;}
+  .seg{display:flex;gap:10px;}
+  .segopt{flex:1;position:relative;cursor:pointer;}
+  .segopt input{position:absolute;opacity:0;pointer-events:none;}
+  .segopt span{display:block;text-align:center;font-family:'Space Mono',monospace;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.03em;color:var(--navy);background:var(--cream);border:2px solid var(--navy);padding:14px 10px;transition:.12s;}
+  .segopt input:checked+span{background:var(--navy);color:#fff;}
+  .segopt input:focus-visible+span{box-shadow:3px 3px 0 var(--red);}
   .gthanks h2{font-size:1.7rem;margin-bottom:6px;}
   .gthanks .tmsg{font-family:'Work Sans',sans-serif;font-size:15px;color:#4A5360;margin:0 0 22px;line-height:1.5;}
   .again{font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:14px;padding:16px 26px;background:var(--navy);color:#fff;border:2px solid var(--navy);width:100%;cursor:pointer;}
@@ -59,6 +65,12 @@
       <div class="frow"><label>Name</label><input name="name" type="text" autocomplete="off" required></div>
       <div class="frow"><label>Phone number</label><input name="phone" type="tel" autocomplete="off" required></div>
       <div class="frow"><label>Email</label><input name="email" type="email" autocomplete="off" required></div>
+      <div class="frow"><label>Entering as</label>
+        <div class="seg">
+          <label class="segopt"><input type="radio" name="entrant" value="Adult" required><span>Adult</span></label>
+          <label class="segopt"><input type="radio" name="entrant" value="Child"><span>Child</span></label>
+        </div>
+      </div>
       <label class="consent"><input type="checkbox" name="consent" value="true"><span>I'm happy for F45 W&#257;naka to contact me about my guess and our programs.</span></label>
       <div class="fhp"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
       <button type="submit" class="btn submit" style="width:100%;">Lock in my guess</button>
@@ -93,9 +105,11 @@ document.querySelectorAll('form.gform').forEach(function(form){
   form.addEventListener('submit',function(e){
     e.preventDefault(); if(err){err.style.display='none';}
     var g=function(n){var el=form.querySelector('[name="'+n+'"]');return el?el.value.trim():'';};
-    var data={guess:g('guess'),name:g('name'),phone:g('phone'),email:g('email'),consent:form.querySelector('input[name="consent"]').checked,company:g('company')};
+    var entEl=form.querySelector('input[name="entrant"]:checked');
+    var data={guess:g('guess'),name:g('name'),phone:g('phone'),email:g('email'),entrant:entEl?entEl.value:'',consent:form.querySelector('input[name="consent"]').checked,company:g('company')};
     if(!data.guess||!/[0-9]/.test(data.guess)){if(err){err.textContent='Please enter a guess in grams.';err.style.display='block';}return;}
     if(!data.name||!data.phone||!data.email){if(err){err.textContent='Please fill in name, phone and email.';err.style.display='block';}return;}
+    if(!data.entrant){if(err){err.textContent='Please choose adult or child.';err.style.display='block';}return;}
     var old=btn.textContent; btn.disabled=true; btn.textContent='Saving...';
     fetch('/api/guess',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
       .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j};});})
