@@ -20,7 +20,9 @@ export default async function handler(req, res) {
   }
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-    const name = String(body.name || '').trim();
+    const firstName = String(body.firstName || '').trim();
+    const lastName = String(body.lastName || '').trim();
+    const name = (firstName + ' ' + lastName).trim();
     const email = String(body.email || '').trim();
     const phone = String(body.phone || '').trim();
     const consent = body.consent === true || body.consent === 'true' || body.consent === 'on';
@@ -28,7 +30,7 @@ export default async function handler(req, res) {
 
     if (honeypot) return res.status(200).json({ ok: true }); // bot trap
 
-    if (!name || !email || !phone) {
+    if (!firstName || !lastName || !email || !phone) {
       return res.status(400).json({ ok: false, error: 'Please fill in your name, email and phone.' });
     }
     if (!consent) {
@@ -79,7 +81,7 @@ export default async function handler(req, res) {
     const mcKey = process.env.MAILERCLOUD_API_KEY;
     const mcList = process.env.MAILERCLOUD_LIST_TF26_PASS;
     if (mcKey && mcList) {
-      const core = { email, name, phone, list_id: mcList, contact_type: 'active' };
+      const core = { email, name: firstName, last_name: lastName, phone, list_id: mcList, contact_type: 'active' };
       const withFields = Object.assign({}, core, {
         source: SOURCE,
         consent: 'Yes',
