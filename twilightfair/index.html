@@ -1,87 +1,83 @@
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>F45 W&#257;naka at the Twilight Fair</title>
-<meta name="description" content="Find us at the W&#257;naka Primary School Twilight Fair. Claim a free 3 class pass, guess the weight of the gym bag, or register for our 2027 Kids Movement Program.">
+<meta name="description" content="Find us at the W&#257;naka Primary School Twilight Fair. Free 3 class pass, guess the weight, or our 2027 Kids Movement Program.">
 <meta name="robots" content="noindex">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/site.css">
 <style>
-  /* Twilight Fair sub-brand: poster-accurate palette + rounded lettering */
-  :root{--navy:#182134;--red:#C73331;--mustard:#F4CB33;--pink:#E1719D;--cream:#F6ECD8;--ink:#182134;}
-  .round{font-family:'Baloo 2',system-ui,sans-serif;}
-  .tw-top{background:var(--navy);padding:14px 0;text-align:center;}
-  .tw-top .brand{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:.02em;color:#fff;text-transform:uppercase;}
-  .tw-hero{position:relative;overflow:hidden;background:var(--pink);border-bottom:3px solid var(--navy);}
-  .tw-hero .wrap{position:relative;z-index:2;max-width:620px;text-align:center;padding-top:36px;padding-bottom:34px;}
-  .tw-badge{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--navy);background:var(--mustard);border:2px solid var(--navy);padding:7px 14px;margin-bottom:18px;box-shadow:3px 3px 0 var(--navy);}
-  .tw-hero h1{font-family:'Baloo 2',sans-serif;font-weight:800;text-transform:uppercase;color:var(--navy);line-height:.98;font-size:clamp(2.5rem,10vw,3.9rem);margin:0;}
-  .tw-sub{font-family:'Work Sans',sans-serif;font-size:16px;font-weight:600;color:var(--navy);margin:14px auto 0;max-width:430px;line-height:1.5;}
-  .tw-cards{background:var(--cream);}
-  .tw-cards .wrap{max-width:540px;}
+  .fhero{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-bottom:3px solid var(--navy);}
+  .fhero .wrap{position:relative;z-index:2;max-width:640px;padding-top:24px;padding-bottom:34px;}
+  .fhead{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;}
+  .fhead .brand{font-family:'Anton',Impact,sans-serif;font-size:1.25rem;letter-spacing:.02em;color:#fff;text-transform:uppercase;}
+  .fhead .badge{width:60px;height:60px;flex:none;}
+  .fpill{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mustard);border:2px solid var(--mustard);padding:7px 13px;margin-bottom:16px;}
+  .fhero h1{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;line-height:.92;font-size:clamp(2.6rem,10vw,4rem);letter-spacing:.005em;margin:0;}
+  .fhero .sub{font-family:'Work Sans',sans-serif;font-size:16px;font-weight:500;color:#EAD9C2;margin:16px 0 0;max-width:440px;line-height:1.5;}
+  .fhero.center .wrap{text-align:center;}
+  .fhero.center .fhead{justify-content:center;position:relative;}
+  .fhero.center .fhead .badge{position:absolute;right:0;top:50%;transform:translateY(-50%);}
+  .fhero.center .sub{margin-left:auto;margin-right:auto;}
+  .ftext{font-family:'Work Sans',sans-serif;}
+  h1,h2,h3{font-family:'Anton',Impact,sans-serif;font-weight:400;}
+
+  .cards{background:var(--cream);}
+  .cards .wrap{max-width:540px;}
   .acard{display:block;text-decoration:none;background:#fff;border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);padding:24px 22px;margin-bottom:22px;transition:transform .12s,box-shadow .12s;}
   .acard:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--navy);}
-  .acard .ak{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:5px 10px;border:2px solid var(--navy);margin-bottom:14px;}
+  .acard .ak{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.06em;padding:5px 10px;border:2px solid var(--navy);margin-bottom:13px;}
   .acard.c1 .ak{background:var(--red);color:#fff;}
   .acard.c2 .ak{background:var(--mustard);color:var(--navy);}
   .acard.c3 .ak{background:var(--pink);color:var(--navy);}
-  .acard h2{font-family:'Baloo 2',sans-serif;font-weight:800;text-transform:uppercase;color:var(--navy);font-size:1.6rem;line-height:1.02;margin:0 0 8px;}
+  .acard h2{color:var(--navy);font-size:1.6rem;line-height:1.02;margin:0 0 8px;text-transform:uppercase;}
   .acard p{font-family:'Work Sans',sans-serif;font-size:14px;color:#4A5360;line-height:1.5;margin:0 0 18px;}
   .acard .go{font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:13px;color:var(--navy);display:inline-flex;align-items:center;gap:8px;}
   .acard .go .arr{color:var(--red);font-size:17px;}
-  /* shared poster value strip */
-  .tw-thread{background:var(--mustard);border-top:3px solid var(--navy);border-bottom:3px solid var(--navy);}
-  .tw-thread .wrap{max-width:560px;text-align:center;padding-top:30px;padding-bottom:30px;}
-  .tw-thread h3{font-family:'Baloo 2',sans-serif;font-weight:800;text-transform:uppercase;color:var(--navy);font-size:clamp(1.3rem,5vw,1.7rem);line-height:1.05;margin:0 0 16px;}
-  .tw-vals{list-style:none;margin:0;padding:0;display:inline-block;text-align:left;}
-  .tw-vals li{font-family:'Work Sans',sans-serif;font-weight:700;font-size:15px;color:var(--navy);margin:7px 0;display:flex;align-items:center;gap:10px;}
-  .tw-vals .st{color:var(--red);font-size:18px;line-height:1;}
-  .tw-when{font-family:'Work Sans',sans-serif;font-size:12px;color:var(--ink-soft);text-align:center;margin:22px auto 0;max-width:440px;}
+  .vstrip{background:var(--navy);color:var(--cream);border-top:3px solid var(--navy);}
+  .vstrip .wrap{max-width:560px;text-align:center;padding-top:34px;padding-bottom:34px;}
+  .vstrip h3{color:#fff;font-size:clamp(1.4rem,5vw,1.8rem);line-height:1.02;margin:0 0 18px;text-transform:uppercase;}
+  .vlist{list-style:none;margin:0;padding:0;display:inline-block;text-align:left;}
+  .vlist li{font-family:'Work Sans',sans-serif;font-weight:600;font-size:15px;color:var(--cream);margin:8px 0;display:flex;align-items:center;gap:10px;}
+  .vlist .st{color:var(--mustard);font-size:18px;line-height:1;}
 </style>
 </head><body>
-
-<div class="tw-top"><span class="brand">F45 W&#257;naka</span></div>
-
-<div class="tw-hero grain"><div class="wrap">
-  <div class="tw-badge">W&#257;naka Primary School Twilight Fair</div>
+<header class="fhero"><div class="wrap">
+  <div class="fhead">
+    <span class="brand">F45 W&#257;naka</span>
+    <img class="badge" src="/img/f45-badge.png" alt="F45 &mdash; Team Training, Life Changing" width="500" height="500">
+  </div>
+  <div class="fpill">W&#257;naka Primary School Twilight Fair</div>
   <h1>What's on<br>at our stall</h1>
-  <p class="tw-sub">Thanks for scanning. Here's everything we've got going on at the fair, take your pick.</p>
-</div></div>
-
-<section class="tw-cards"><div class="wrap">
-
+  <p class="sub">Thanks for scanning. Here's everything we've got going on at the fair, take your pick.</p>
+</div></header>
+<section class="cards"><div class="wrap">
   <a class="acard c1" href="/twilightfair/twilightpass/">
     <span class="ak">No cost, no pressure</span>
     <h2>Free 3 class pass</h2>
     <p>Three coached 45 minute sessions at F45 W&#257;naka. Just come and try us, for anyone new to F45.</p>
     <span class="go">Claim your pass <span class="arr">&#8594;</span></span>
   </a>
-
   <a class="acard c2" href="/twilightfair/guesstheweight/">
     <span class="ak">$2 a guess, all to the school</span>
     <h2>Guess the weight</h2>
     <p>What's in the F45 gym bag? Guess its weight for the chance to win it, with a 3 week kickstarter pass inside.</p>
     <span class="go">How it works <span class="arr">&#8594;</span></span>
   </a>
-
   <a class="acard c3" href="/twilightfair/kidsprogram/">
     <span class="ak">Launching 2027</span>
     <h2>Kids Movement Program</h2>
     <p>Movement confidence, body awareness and safe gym habits. Register your interest and help us shape it for W&#257;naka families.</p>
     <span class="go">Register interest <span class="arr">&#8594;</span></span>
   </a>
-
 </div></section>
-
-<section class="tw-thread"><div class="wrap">
+<section class="vstrip"><div class="wrap">
   <h3>We help busy parents<br>make time for movement</h3>
-  <ul class="tw-vals">
+  <ul class="vlist">
     <li><span class="st">&#9733;</span> Coached 45 minute sessions</li>
     <li><span class="st">&#9733;</span> Done-for-you planning</li>
     <li><span class="st">&#9733;</span> Results that matter</li>
   </ul>
 </div></section>
-
 <div class="foot"><div class="wrap">
 <div class="fbrand">F45 W&#257;naka</div>
 <div class="vals">Consistency, effort and connection.</div>
