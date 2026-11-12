@@ -1,122 +1,128 @@
-// F45 Wanaka — Twilight Fair "Guess the weight" entry handler (iPad kiosk).
-// Primary capture: appends every guess as a row to a Google Sheet (via a
-// Google Apps Script web app). If the person ticks permission to contact, they
-// are also added to a MailerCloud marketing list. If the Sheet write fails for
-// any reason, the entry is emailed to the studio as a fallback so no guess is
-// ever lost. Entries are captured regardless of marketing consent.
-//
-// Env vars (Vercel -> Settings -> Environment Variables):
-//   GUESS_SHEET_URL         (required for DB capture - the Apps Script /exec URL)
-//   GUESS_SHEET_SECRET      (optional - shared secret checked by the script)
-//   RESEND_API_KEY          (required - used for the fallback alert)
-//   ALERT_TO                (optional, defaults to wanaka@f45training.co.nz)
-//   ALERT_FROM              (optional, defaults to Resend's test sender)
-//   MAILERCLOUD_API_KEY        (optional - enables list sync)
-//   MAILERCLOUD_LIST_TF26_GUESS (optional - the guess-the-weight marketing list id)
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guess the weight &mdash; F45 W&#257;naka</title>
+<meta name="description" content="Guess the weight of the F45 gym bag to win it.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+<style>
+  .fhero{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-bottom:3px solid var(--navy);}
+  .fhero .wrap{position:relative;z-index:2;max-width:640px;padding-top:24px;padding-bottom:34px;}
+  .fhead{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;}
+  .fhead .brand{font-family:'Anton',Impact,sans-serif;font-size:1.25rem;letter-spacing:.02em;color:#fff;text-transform:uppercase;}
+  .fhead .badge{width:60px;height:60px;flex:none;}
+  .fpill{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mustard);border:2px solid var(--mustard);padding:7px 13px;margin-bottom:16px;}
+  .fhero h1{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;line-height:.92;font-size:clamp(2.6rem,10vw,4rem);letter-spacing:.005em;margin:0;}
+  .fhero .sub{font-family:'Work Sans',sans-serif;font-size:16px;font-weight:500;color:#EAD9C2;margin:16px 0 0;max-width:440px;line-height:1.5;}
+  .fhero.center .wrap{text-align:center;}
+  .fhero.center .fhead{justify-content:center;position:relative;}
+  .fhero.center .fhead .badge{position:absolute;right:0;top:50%;transform:translateY(-50%);}
+  .fhero.center .sub{margin-left:auto;margin-right:auto;}
+  .ftext{font-family:'Work Sans',sans-serif;}
+  h1,h2,h3{font-family:'Anton',Impact,sans-serif;font-weight:400;}
 
-const SOURCE = 'Twilight Fair 2026 Guess the Weight';
-
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({ ok: false, error: 'Method not allowed' });
+  .formsec{background:var(--cream);}
+  .formsec .wrap{max-width:480px;}
+  .card{background:#fff;border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);padding:26px 22px;}
+  .card h2{color:var(--navy);font-size:1.4rem;line-height:1;margin:0 0 16px;text-transform:uppercase;}
+  .frow label{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);display:block;margin-bottom:7px;}
+  .guessrow{margin:0 0 18px;}
+  .guesswrap{position:relative;}
+  .guesswrap input{width:100%;font-family:'Anton',Impact,sans-serif;font-size:30px;padding:16px 70px 16px 16px;background:var(--mustard);border:2px solid var(--navy);color:var(--navy);outline:none;box-shadow:4px 4px 0 var(--navy);-webkit-appearance:none;letter-spacing:.02em;}
+  .guesswrap .unit{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:var(--navy);opacity:.7;}
+  .seg{display:flex;gap:10px;}
+  .segopt{flex:1;position:relative;cursor:pointer;}
+  .segopt input{position:absolute;opacity:0;pointer-events:none;}
+  .segopt span{display:block;text-align:center;font-family:'Space Mono',monospace;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.03em;color:var(--navy);background:var(--cream);border:2px solid var(--navy);padding:14px 10px;transition:.12s;}
+  .segopt input:checked+span{background:var(--navy);color:#fff;}
+  .segopt input:focus-visible+span{box-shadow:3px 3px 0 var(--red);}
+  .gthanks h2{font-size:1.7rem;margin-bottom:6px;}
+  .gthanks .tmsg{font-family:'Work Sans',sans-serif;font-size:15px;color:#4A5360;margin:0 0 22px;line-height:1.5;}
+  .again{font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:14px;padding:16px 26px;background:var(--navy);color:#fff;border:2px solid var(--navy);width:100%;cursor:pointer;}
+  .fine{font-family:'Work Sans',sans-serif;font-size:12px;color:var(--ink-soft);text-align:center;margin:16px auto 0;max-width:460px;line-height:1.5;}
+</style>
+</head><body>
+<header class="fhero center"><div class="wrap">
+  <div class="fhead">
+    <span class="brand">F45 W&#257;naka</span>
+    <img class="badge" src="/img/f45-badge.png" alt="F45 &mdash; Team Training, Life Changing" width="500" height="500">
+  </div>
+  <div class="fpill">Win the F45 gym bag</div>
+  <h1>Guess the weight</h1>
+  <p class="sub">What's in the bag? Put your best guess in grams. Closest guess wins the bag and a 3 week kickstarter pass.</p>
+</div></header>
+<section class="formsec"><div class="wrap">
+  <div class="card">
+    <form class="gform" novalidate>
+      <h2>Your guess</h2>
+      <div class="guessrow">
+        <label>Your guess</label>
+        <div class="guesswrap">
+          <input name="guess" type="text" inputmode="numeric" autocomplete="off" placeholder="0" required>
+          <span class="unit">grams</span>
+        </div>
+      </div>
+      <div class="frow"><label>First name</label><input name="firstName" type="text" autocomplete="off" required></div>
+      <div class="frow"><label>Last name</label><input name="lastName" type="text" autocomplete="off" required></div>
+      <div class="frow"><label>Phone number</label><input name="phone" type="tel" autocomplete="off" required></div>
+      <div class="frow"><label>Email</label><input name="email" type="email" autocomplete="off" required></div>
+      <div class="frow"><label>Entering as</label>
+        <div class="seg">
+          <label class="segopt"><input type="radio" name="entrant" value="Adult" required><span>Adult</span></label>
+          <label class="segopt"><input type="radio" name="entrant" value="Child"><span>Child</span></label>
+        </div>
+      </div>
+      <label class="consent"><input type="checkbox" name="consent" value="true"><span>I'm happy for F45 W&#257;naka to contact me about my guess and our programs.</span></label>
+      <div class="fhp"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+      <button type="submit" class="btn submit" style="width:100%;">Lock in my guess</button>
+      <div class="ferr"></div>
+    </form>
+    <div class="gthanks" style="display:none;text-align:center;">
+      <h2>Guess locked in!</h2>
+      <p class="tmsg">Good luck.</p>
+      <button type="button" class="again">Enter another guess</button>
+    </div>
+  </div>
+  <p class="fine">$2 a guess, and every dollar goes to the school. One entry per guess.</p>
+</div></section>
+<div class="foot"><div class="wrap">
+<div class="fbrand">F45 W&#257;naka</div>
+<div class="vals">Consistency, effort and connection.</div>
+<div>Find the team at the fair, Saturday 14 November, 3 to 7pm.<br>
+<a href="mailto:wanaka@f45training.co.nz">wanaka@f45training.co.nz</a></div>
+<div class="fmuted">&copy; 2026 F45 W&#257;naka</div>
+</div></div>
+<script>
+document.querySelectorAll('form.gform').forEach(function(form){
+  var card=form.parentNode, err=form.querySelector('.ferr'), thanks=card.querySelector('.gthanks'),
+      btn=form.querySelector('button[type=submit]'), again=thanks.querySelector('.again');
+  function reset(){
+    form.reset(); form.style.display='block'; thanks.style.display='none';
+    btn.disabled=false; btn.textContent='Lock in my guess';
+    if(err){err.style.display='none';}
+    var gi=form.querySelector('[name="guess"]'); if(gi){gi.focus();}
   }
-  try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-    const name = String(body.name || '').trim();
-    const email = String(body.email || '').trim();
-    const phone = String(body.phone || '').trim();
-    const guessRaw = String(body.guess || '').trim();
-    const guess = parseInt(guessRaw.replace(/[^0-9]/g, ''), 10);
-    const consent = body.consent === true || body.consent === 'true' || body.consent === 'on';
-    const entrant = String(body.entrant || '').trim() === 'Child' ? 'Child' : (String(body.entrant || '').trim() === 'Adult' ? 'Adult' : '');
-    const honeypot = String(body.company || '').trim();
-
-    if (honeypot) return res.status(200).json({ ok: true }); // bot trap
-
-    if (!name || !email || !phone) {
-      return res.status(400).json({ ok: false, error: 'Please fill in name, phone and email.' });
-    }
-    if (!Number.isFinite(guess) || guess <= 0) {
-      return res.status(400).json({ ok: false, error: 'Please enter a guess in grams (numbers only).' });
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return res.status(400).json({ ok: false, error: "That email doesn't look right." });
-    }
-    if (!entrant) {
-      return res.status(400).json({ ok: false, error: 'Please choose adult or child.' });
-    }
-
-    const when = new Date().toLocaleString('en-NZ', { timeZone: 'Pacific/Auckland' });
-
-    // ---- Primary capture: append a row to the Google Sheet ----
-    let sheetOk = false;
-    const sheetUrl = process.env.GUESS_SHEET_URL;
-    if (sheetUrl) {
-      try {
-        const sr = await fetch(sheetUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            secret: process.env.GUESS_SHEET_SECRET || '',
-            received: when, name, phone, email,
-            guess, entrant, consent: consent ? 'Yes' : 'No', source: SOURCE,
-          }),
-        });
-        const sj = await sr.json().catch(() => ({}));
-        sheetOk = sr.ok && sj && sj.ok === true;
-        if (!sheetOk) console.error('Sheet write failed', sr.status, JSON.stringify(sj));
-      } catch (e) { console.error('Sheet error', e); }
-    }
-
-    // ---- Marketing sync (adults only, and only with permission to contact) ----
-    // Children's entries are never added to the marketing list, even if the box
-    // is ticked. Their guess is still captured in the Sheet above for the draw.
-    const mcKey = process.env.MAILERCLOUD_API_KEY;
-    const mcList = process.env.MAILERCLOUD_LIST_TF26_GUESS;
-    if (consent && entrant === 'Adult' && mcKey && mcList) {
-      const core = { email, name, phone, list_id: mcList, contact_type: 'active' };
-      const withFields = Object.assign({}, core, { source: SOURCE, guess_grams: String(guess) });
-      const post = (payload) => fetch('https://cloudapi.mailercloud.com/v1/contacts', {
-        method: 'POST',
-        headers: { Authorization: mcKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      try {
-        let mc = await post(withFields);
-        if (!mc.ok) {
-          console.error('MailerCloud sync (with fields)', mc.status, await mc.text());
-          mc = await post(core);
-          if (!mc.ok) console.error('MailerCloud sync (core)', mc.status, await mc.text());
-        }
-      } catch (e) { console.error('MailerCloud error', e); }
-    }
-
-    // ---- Fallback: only email the studio if the Sheet capture didn't work ----
-    let fallbackOk = false;
-    if (!sheetOk) {
-      const apiKey = process.env.RESEND_API_KEY;
-      if (apiKey) {
-        const to = process.env.ALERT_TO || 'wanaka@f45training.co.nz';
-        const from = process.env.ALERT_FROM || 'F45 Wanaka Guess the Weight <onboarding@resend.dev>';
-        const guessG = guess.toLocaleString('en-NZ');
-        const text = `GUESS (sheet capture failed - saved by email instead)\n\nGuess: ${guessG} g\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nEntering as: ${entrant}\nContact OK: ${consent ? 'Yes' : 'No'}\nSource: ${SOURCE}\nReceived: ${when} (NZ)`;
-        try {
-          const r = await fetch('https://api.resend.com/emails', {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ from, to: [to], reply_to: email, subject: `Guess (backup): ${guessG}g - ${name}`, text }),
-          });
-          fallbackOk = r.ok;
-          if (!r.ok) console.error('Fallback email failed', r.status, await r.text());
-        } catch (e) { console.error('Fallback email error', e); }
-      }
-    }
-
-    if (sheetOk || fallbackOk) return res.status(200).json({ ok: true });
-    return res.status(502).json({ ok: false, error: 'Could not save that entry. Please try again.' });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ ok: false, error: 'Something went wrong. Please try again.' });
-  }
-}
+  again.addEventListener('click',reset);
+  form.addEventListener('submit',function(e){
+    e.preventDefault(); if(err){err.style.display='none';}
+    var g=function(n){var el=form.querySelector('[name="'+n+'"]');return el?el.value.trim():'';};
+    var entEl=form.querySelector('input[name="entrant"]:checked');
+    var data={guess:g('guess'),firstName:g('firstName'),lastName:g('lastName'),phone:g('phone'),email:g('email'),entrant:entEl?entEl.value:'',consent:form.querySelector('input[name="consent"]').checked,company:g('company')};
+    if(!data.guess||!/[0-9]/.test(data.guess)){if(err){err.textContent='Please enter a guess in grams.';err.style.display='block';}return;}
+    if(!data.firstName||!data.lastName||!data.phone||!data.email){if(err){err.textContent='Please fill in name, phone and email.';err.style.display='block';}return;}
+    if(!data.entrant){if(err){err.textContent='Please choose adult or child.';err.style.display='block';}return;}
+    var old=btn.textContent; btn.disabled=true; btn.textContent='Saving...';
+    fetch('/api/guess',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+      .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j};});})
+      .then(function(res){
+        if(!res.ok||!res.j.ok){throw new Error((res.j&&res.j.error)||'Something went wrong.');}
+        var first=data.firstName;
+        form.style.display='none';
+        thanks.querySelector('.tmsg').textContent='Thanks '+first+', your guess is in. Good luck!';
+        thanks.style.display='block';
+      })
+      .catch(function(er){if(err){err.textContent=er.message||'Could not save. Please try again.';err.style.display='block';} btn.disabled=false; btn.textContent=old;});
+  });
+});
+</script>
+</body></html>
