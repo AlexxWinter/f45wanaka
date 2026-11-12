@@ -1,43 +1,50 @@
 <!DOCTYPE html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Guess the weight &mdash; F45 W&#257;naka</title>
+<meta name="description" content="Guess the weight of the F45 gym bag to win it.">
 <meta name="robots" content="noindex">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/site.css">
 <style>
-  :root{--navy:#182134;--red:#C73331;--mustard:#F4CB33;--pink:#E1719D;--cream:#F6ECD8;--ink:#182134;}
-  .tw-top{background:var(--navy);padding:14px 0;text-align:center;}
-  .tw-top .brand{font-family:'Baloo 2',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:.02em;color:#fff;text-transform:uppercase;}
-  .gw{position:relative;overflow:hidden;background:var(--pink);border-bottom:3px solid var(--navy);}
-  .gw .wrap{position:relative;z-index:2;max-width:560px;text-align:center;padding-top:26px;padding-bottom:26px;}
-  .gw .badge{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--navy);background:var(--mustard);border:2px solid var(--navy);padding:7px 14px;margin-bottom:14px;box-shadow:3px 3px 0 var(--navy);}
-  .gw h1{font-family:'Baloo 2',sans-serif;font-weight:800;text-transform:uppercase;color:var(--navy);line-height:.98;font-size:clamp(2.2rem,8vw,3rem);margin:0;}
-  .gw .q{font-family:'Work Sans',sans-serif;font-size:16px;font-weight:600;color:var(--navy);margin:10px auto 0;max-width:420px;line-height:1.45;}
+  .fhero{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-bottom:3px solid var(--navy);}
+  .fhero .wrap{position:relative;z-index:2;max-width:640px;padding-top:24px;padding-bottom:34px;}
+  .fhead{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;}
+  .fhead .brand{font-family:'Anton',Impact,sans-serif;font-size:1.25rem;letter-spacing:.02em;color:#fff;text-transform:uppercase;}
+  .fhead .badge{width:60px;height:60px;flex:none;}
+  .fpill{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mustard);border:2px solid var(--mustard);padding:7px 13px;margin-bottom:16px;}
+  .fhero h1{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;line-height:.92;font-size:clamp(2.6rem,10vw,4rem);letter-spacing:.005em;margin:0;}
+  .fhero .sub{font-family:'Work Sans',sans-serif;font-size:16px;font-weight:500;color:#EAD9C2;margin:16px 0 0;max-width:440px;line-height:1.5;}
+  .fhero.center .wrap{text-align:center;}
+  .fhero.center .fhead{justify-content:center;position:relative;}
+  .fhero.center .fhead .badge{position:absolute;right:0;top:50%;transform:translateY(-50%);}
+  .fhero.center .sub{margin-left:auto;margin-right:auto;}
+  .ftext{font-family:'Work Sans',sans-serif;}
+  h1,h2,h3{font-family:'Anton',Impact,sans-serif;font-weight:400;}
+
   .formsec{background:var(--cream);}
   .formsec .wrap{max-width:480px;}
   .card{background:#fff;border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);padding:26px 22px;}
+  .card h2{color:var(--navy);font-size:1.4rem;line-height:1;margin:0 0 16px;text-transform:uppercase;}
   .frow label{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);display:block;margin-bottom:7px;}
   .guessrow{margin:0 0 18px;}
   .guesswrap{position:relative;}
-  .guesswrap input{width:100%;font-family:'Baloo 2',sans-serif;font-weight:800;font-size:30px;padding:16px 70px 16px 16px;background:var(--mustard);border:2px solid var(--navy);color:var(--navy);outline:none;box-shadow:4px 4px 0 var(--navy);-webkit-appearance:none;}
-  .guesswrap .unit{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:'Baloo 2',sans-serif;font-weight:800;font-size:22px;color:var(--navy);opacity:.6;}
-  .card h2{font-family:'Baloo 2',sans-serif;font-weight:800;text-transform:uppercase;color:var(--navy);font-size:1.4rem;line-height:1;margin:0 0 16px;}
+  .guesswrap input{width:100%;font-family:'Anton',Impact,sans-serif;font-size:30px;padding:16px 70px 16px 16px;background:var(--mustard);border:2px solid var(--navy);color:var(--navy);outline:none;box-shadow:4px 4px 0 var(--navy);-webkit-appearance:none;letter-spacing:.02em;}
+  .guesswrap .unit{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:'Space Mono',monospace;font-weight:700;font-size:16px;color:var(--navy);opacity:.7;}
   .gthanks h2{font-size:1.7rem;margin-bottom:6px;}
   .gthanks .tmsg{font-family:'Work Sans',sans-serif;font-size:15px;color:#4A5360;margin:0 0 22px;line-height:1.5;}
   .again{font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:14px;padding:16px 26px;background:var(--navy);color:#fff;border:2px solid var(--navy);width:100%;cursor:pointer;}
   .fine{font-family:'Work Sans',sans-serif;font-size:12px;color:var(--ink-soft);text-align:center;margin:16px auto 0;max-width:460px;line-height:1.5;}
 </style>
 </head><body>
-
-<div class="tw-top"><span class="brand">F45 W&#257;naka</span></div>
-
-<div class="gw grain"><div class="wrap">
-  <div class="badge">Win the F45 gym bag</div>
+<header class="fhero center"><div class="wrap">
+  <div class="fhead">
+    <span class="brand">F45 W&#257;naka</span>
+    <img class="badge" src="/img/f45-badge.png" alt="F45 &mdash; Team Training, Life Changing" width="500" height="500">
+  </div>
+  <div class="fpill">Win the F45 gym bag</div>
   <h1>Guess the weight</h1>
-  <p class="q">What's in the bag? Put your best guess in grams. Closest guess wins the bag and a 3 week kickstarter pass.</p>
-</div></div>
-
+  <p class="sub">What's in the bag? Put your best guess in grams. Closest guess wins the bag and a 3 week kickstarter pass.</p>
+</div></header>
 <section class="formsec"><div class="wrap">
   <div class="card">
     <form class="gform" novalidate>
@@ -65,14 +72,19 @@
   </div>
   <p class="fine">$2 a guess, and every dollar goes to the school. One entry per guess.</p>
 </div></section>
-
+<div class="foot"><div class="wrap">
+<div class="fbrand">F45 W&#257;naka</div>
+<div class="vals">Consistency, effort and connection.</div>
+<div>Find the team at the fair, Saturday 14 November, 3 to 7pm.<br>
+<a href="mailto:wanaka@f45training.co.nz">wanaka@f45training.co.nz</a></div>
+<div class="fmuted">&copy; 2026 F45 W&#257;naka</div>
+</div></div>
 <script>
 document.querySelectorAll('form.gform').forEach(function(form){
   var card=form.parentNode, err=form.querySelector('.ferr'), thanks=card.querySelector('.gthanks'),
       btn=form.querySelector('button[type=submit]'), again=thanks.querySelector('.again');
   function reset(){
-    form.reset();
-    form.style.display='block'; thanks.style.display='none';
+    form.reset(); form.style.display='block'; thanks.style.display='none';
     btn.disabled=false; btn.textContent='Lock in my guess';
     if(err){err.style.display='none';}
     var gi=form.querySelector('[name="guess"]'); if(gi){gi.focus();}
