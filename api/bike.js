@@ -30,21 +30,16 @@ export default async function handler(req, res) {
     const mcList = process.env.MAILERCLOUD_LIST_TF26_BIKE;
     if (!mcKey || !mcList) return res.status(200).json({ ok: true, skipped: 'not configured' });
 
-    const core = { email, name: firstName, last_name: lastName, phone, list_id: mcList, contact_type: 'active' };
-    const withFields = Object.assign({}, core, { source: SOURCE });
-    const post = (payload) => fetch('https://cloudapi.mailercloud.com/v1/contacts', {
-      method: 'POST',
-      headers: { Authorization: mcKey, 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    try {
-      let mc = await post(withFields);
-      if (!mc.ok) {
-        console.error('MailerCloud bike (with fields)', mc.status, await mc.text());
-        mc = await post(core);
-        if (!mc.ok) console.error('MailerCloud bike (core)', mc.status, await mc.text());
-      }
-    } catch (e) { console.error('MailerCloud bike error', e); }
+    const core = { email, first_name: firstName, last_name: lastName, phone, list_id: mcList, contact_type: 'active' };
+    const post = (payload) => fetch('https://cloudapi.mailercloud.com/v1/contacts/upsert', {
+        method: 'POST',
+        headers: { Authorization: mcKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      try {
+        const mc = await post(core); // core = first name, last name, email, phone only
+        if (!mc.ok) console.error('MailerCloud upsert', mc.status, await mc.text());
+      } catch (e) { console.error('MailerCloud error', e); }
 
     return res.status(200).json({ ok: true });
   } catch (err) {
