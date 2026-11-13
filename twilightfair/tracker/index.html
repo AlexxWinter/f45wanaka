@@ -116,8 +116,10 @@ select.input{font-size:17px}
 .pt .th{padding:4px 0;font-family:var(--mono);font-size:13px;letter-spacing:1px;color:var(--ink);border-bottom:2px solid var(--navy)}
 .pt .td{padding:8px 0;border-bottom:1px solid var(--line)}
 .pt .pn{font-family:var(--display);font-size:22px}
-.pt .cell{display:flex;justify-content:space-between;gap:8px;padding-right:10px}
+.pt .cell{display:flex;justify-content:space-between;gap:8px;padding-right:10px;font-weight:600}
 .pt .cell em{font-style:normal;font-family:var(--mono);font-weight:700}
+.pt .cell.second{font-weight:500;font-size:14px;opacity:.68;margin-top:3px}
+.pt .cell.second em{color:var(--ink)}
 .pt .none{color:var(--ink)}
 .card-adult{background:var(--navy2);padding:16px 22px 18px;display:flex;flex-direction:column;gap:10px}
 .card-adult h3{margin:0;font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:1px;color:var(--pink)}
@@ -404,19 +406,19 @@ function aggregate(rides){
   });
   var counts = {}; CLASSES.forEach(function(c){ counts[c.id]=0; });
   var reached = {}; CLASSES.forEach(function(c){ reached[c.id]=0; }); // ts the class reached its current count (tie-break: earlier wins)
-  var podBest = {}; POD_IDS.forEach(function(p){ podBest[p]={m:null,f:null}; });
+  var podStu = {}; POD_IDS.forEach(function(p){ podStu[p]={m:[],f:[]}; });
   var adults = { m:[], f:[] };
   Object.keys(riders).forEach(function(k){
     var x = riders[k]; counts[x.cid]++;
     if(x.firstTs > reached[x.cid]) reached[x.cid] = x.firstTs;
-    if(x.who==='s'){
-      var pod = CLASS_BY_ID[x.cid].pod, slot = podBest[pod][x.sex];
-      if(!slot || x.best>slot.best || (x.best===slot.best && x.bestTs<slot.bestTs)) podBest[pod][x.sex] = x;
-    } else { adults[x.sex].push(x); }
+    if(x.who==='s'){ podStu[CLASS_BY_ID[x.cid].pod][x.sex].push(x); }
+    else { adults[x.sex].push(x); }
   });
-  adults.m.sort(function(a,b){ return b.best-a.best || a.bestTs-b.bestTs; });
-  adults.f.sort(function(a,b){ return b.best-a.best || a.bestTs-b.bestTs; });
-  return { riders:riders, counts:counts, reached:reached, podBest:podBest, adults:adults, riderCount:Object.keys(riders).length, rideCount:rides.length };
+  var cmp = function(a,b){ return b.best-a.best || a.bestTs-b.bestTs; }; // best metres, earlier wins ties
+  var podTop = {}; POD_IDS.forEach(function(p){ podTop[p] = { m:podStu[p].m.sort(cmp).slice(0,2), f:podStu[p].f.sort(cmp).slice(0,2) }; });
+  adults.m.sort(cmp);
+  adults.f.sort(cmp);
+  return { riders:riders, counts:counts, reached:reached, podTop:podTop, adults:adults, riderCount:Object.keys(riders).length, rideCount:rides.length };
 }
 
 // ---------- routing ----------
@@ -642,8 +644,11 @@ function renderDisplay(){
 
   var ph = '<div class="th">POD</div><div class="th">BOY</div><div class="th">GIRL</div>';
   POD_IDS.forEach(function(p){
-    function cell(x){ return x ? '<div class="td"><div class="cell"><span style="font-weight:600">'+esc(x.name)+'</span><em>'+x.best+'</em></div></div>' : '<div class="td"><div class="cell none">-</div></div>'; }
-    ph += '<div class="td pn">'+p+'</div>'+cell(agg.podBest[p].m)+cell(agg.podBest[p].f);
+    function cell(list){
+      if(!list || !list.length) return '<div class="td"><div class="cell none">-</div></div>';
+      return '<div class="td">'+list.map(function(x,i){ return '<div class="cell'+(i>0?' second':'')+'"><span>'+(i>0?'':'')+esc(x.name)+'</span><em>'+x.best+'</em></div>'; }).join('')+'</div>';
+    }
+    ph += '<div class="td pn">'+p+'</div>'+cell(agg.podTop[p].m)+cell(agg.podTop[p].f);
   });
   $('d-pods').innerHTML = ph;
   function adultRows(arr){
