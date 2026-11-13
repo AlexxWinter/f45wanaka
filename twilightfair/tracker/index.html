@@ -86,11 +86,10 @@ select.input{font-size:17px}
 .f45{background:#fff;color:var(--navy);font-family:var(--display);font-size:30px;letter-spacing:1px;padding:6px 14px;line-height:1}
 .brand h2{margin:0;font-family:var(--display);font-weight:400;font-size:40px;line-height:1;letter-spacing:1px}
 .brand .sub{font-family:var(--mono);font-size:14px;letter-spacing:3px;color:var(--mustard)}
-.brand .dlogo{height:clamp(56px,6vw,92px);width:auto;display:block}
-.brand .dtitle{height:clamp(64px,9vw,128px);width:auto;max-width:100%;display:block}
-.foot-para{display:flex;align-items:center;gap:14px}
-.foot-para .thanks{color:var(--mist);font-family:var(--mono);font-size:12px;letter-spacing:2px;text-transform:uppercase}
-.foot .dparadiso{height:50px;width:auto;display:block}
+.brand .dlogo{height:clamp(48px,5vw,82px);width:auto;display:block}
+.brand .dtitle{height:clamp(60px,8vw,118px);width:auto;max-width:100%;display:block}
+.para-chip{background:#fff;padding:8px 12px;display:inline-flex;border-radius:3px}
+.para-chip img{height:clamp(30px,3.6vw,46px);width:auto;display:block}
 .bigstats{display:flex;gap:40px;flex-wrap:wrap}
 .bigstat{display:flex;flex-direction:column;align-items:flex-end}
 .bigstat .label{color:var(--pink);font-size:13px}
@@ -232,8 +231,9 @@ select.input{font-size:17px}
   <div class="disp">
     <div class="d-head">
       <div class="brand">
-        <img class="dlogo" src="/img/f45-badge.png" alt="F45 W&#257;naka">
+        <img class="dlogo" src="/img/f45-logo-white.png" alt="F45 W&#257;naka">
         <img class="dtitle" src="/img/classvsclass.png" alt="Class vs Class &mdash; Move for the Movies, 30 second bike challenge">
+        <span class="para-chip"><img src="/img/cinema-paradiso.png" alt="Cinema Paradiso W&#257;naka"></span>
       </div>
       <div class="bigstats">
         <div class="bigstat"><span class="label">Riders so far</span><b id="d-riders">0</b></div>
@@ -264,7 +264,7 @@ select.input{font-size:17px}
     </div>
 
     <div class="foot">
-      <div class="foot-para"><span class="thanks">Proudly with</span><img class="dparadiso" src="/img/cinema-paradiso.png" alt="Cinema Paradiso W&#257;naka"></div>
+      <b>Thanks to Cinema Paradiso for backing W&#257;naka Primary.</b>
       <span>We help parents who prioritise their health make time for movement.</span>
     </div>
   </div>
