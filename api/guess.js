@@ -77,20 +77,15 @@ export default async function handler(req, res) {
     const mcKey = process.env.MAILERCLOUD_API_KEY;
     const mcList = process.env.MAILERCLOUD_LIST_TF26_GUESS;
     if (consent && entrant === 'Adult' && mcKey && mcList) {
-      const core = { email, name: firstName, last_name: lastName, phone, list_id: mcList, contact_type: 'active' };
-      const withFields = Object.assign({}, core, { source: SOURCE, guess_grams: String(guess) });
-      const post = (payload) => fetch('https://cloudapi.mailercloud.com/v1/contacts', {
+      const core = { email, first_name: firstName, last_name: lastName, phone, list_id: mcList, contact_type: 'active' };
+      const post = (payload) => fetch('https://cloudapi.mailercloud.com/v1/contacts/upsert', {
         method: 'POST',
         headers: { Authorization: mcKey, 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
       try {
-        let mc = await post(withFields);
-        if (!mc.ok) {
-          console.error('MailerCloud sync (with fields)', mc.status, await mc.text());
-          mc = await post(core);
-          if (!mc.ok) console.error('MailerCloud sync (core)', mc.status, await mc.text());
-        }
+        const mc = await post(core); // core = first name, last name, email, phone only
+        if (!mc.ok) console.error('MailerCloud upsert', mc.status, await mc.text());
       } catch (e) { console.error('MailerCloud error', e); }
     }
 
