@@ -528,6 +528,12 @@ function submitRide(e){
   $('a-email').value=''; $('a-phone').value=''; $('a-consent').checked=false;
   updateNote();
   sendRide(id, data);
+  // adult who gave an email + consent -> sync to the MailerCloud Bike list (same-origin, fire-and-forget)
+  if(form.who==='p' && data.consent && data.email){
+    var _p = nm.display.split(' '), _l = _p.length>1 ? _p.pop() : '', _f = _p.join(' ');
+    fetch('/api/bike',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({firstName:_f,lastName:_l,email:data.email,phone:data.phone,consent:true})}).catch(function(){});
+  }
   var after = aggregate(allRides()).counts[c.id];
   toast('Added '+nm.display+' '+m+'m. '+c.name+' (Pod '+c.pod+') now has '+after+' rider'+(after===1?'':'s')+(wasNew?'.':' (no extra point).'));
   $('a-first').focus();
