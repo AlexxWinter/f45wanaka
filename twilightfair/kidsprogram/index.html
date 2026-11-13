@@ -3,52 +3,112 @@
 <title>Kids Movement Program &mdash; F45 W&#257;naka</title>
 <meta name="description" content="Register your interest in the F45 W&#257;naka Kids Movement Program, launching 2027.">
 <meta name="robots" content="noindex">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/site.css">
 <style>
-  .fhero{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-bottom:3px solid var(--navy);}
-  .fhero .wrap{position:relative;z-index:2;max-width:640px;padding-top:24px;padding-bottom:34px;}
-  .fhead{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;}
-  .fhead .brand{font-family:'Anton',Impact,sans-serif;font-size:1.25rem;letter-spacing:.02em;color:#fff;text-transform:uppercase;}
-  .fhead .badge{width:60px;height:60px;flex:none;}
-  .fpill{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mustard);border:2px solid var(--mustard);padding:7px 13px;margin-bottom:16px;}
-  .fhero h1{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;color:#fff;line-height:.92;font-size:clamp(2.6rem,10vw,4rem);letter-spacing:.005em;margin:0;}
-  .fhero .sub{font-family:'Work Sans',sans-serif;font-size:16px;font-weight:500;color:#EAD9C2;margin:16px 0 0;max-width:440px;line-height:1.5;}
-  .fhero.center .wrap{text-align:center;}
-  .fhero.center .fhead{justify-content:center;position:relative;}
-  .fhero.center .fhead .badge{position:absolute;right:0;top:50%;transform:translateY(-50%);}
-  .fhero.center .sub{margin-left:auto;margin-right:auto;}
-  .ftext{font-family:'Work Sans',sans-serif;}
   h1,h2,h3{font-family:'Anton',Impact,sans-serif;font-weight:400;}
+  .fhero{position:relative;overflow:hidden;background:var(--navy);color:#fff;border-bottom:3px solid var(--navy);}
+  .fhero .wrap{position:relative;z-index:2;max-width:640px;padding-top:24px;padding-bottom:34px;text-align:center;}
+  .fhead{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:22px;position:relative;}
+  .fhead .brand{font-family:'Anton',Impact,sans-serif;font-size:1.25rem;letter-spacing:.02em;color:#fff;text-transform:uppercase;}
+  .fhead .badge{width:58px;height:58px;flex:none;position:absolute;right:0;top:50%;transform:translateY(-50%);}
+  .fpill{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mustard);border:2px solid var(--mustard);padding:7px 13px;margin-bottom:16px;}
+  .fhero h1{text-transform:uppercase;color:#fff;line-height:.92;font-size:clamp(2.4rem,8vw,3.5rem);margin:0;}
+  .fhero .sub{font-family:'Work Sans',sans-serif;font-size:16px;font-weight:500;color:#EAD9C2;margin:16px auto 0;max-width:440px;line-height:1.5;}
 
-  .stubsec{background:var(--cream);}
-  .stubsec .wrap{max-width:520px;text-align:center;}
-  .stubsec .big{font-family:'Work Sans',sans-serif;font-size:17px;font-weight:600;color:var(--navy);margin:0 auto;max-width:420px;line-height:1.5;}
-  .pillars{list-style:none;margin:22px auto 0;padding:0;display:inline-block;text-align:left;}
-  .pillars li{font-family:'Work Sans',sans-serif;font-weight:700;font-size:15px;color:var(--navy);margin:8px 0;display:flex;align-items:center;gap:10px;}
-  .pillars .st{color:var(--red);font-size:18px;line-height:1;}
-  .back{font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:13px;color:var(--navy);text-decoration:none;display:inline-block;margin-top:26px;border-bottom:3px solid var(--red);padding-bottom:3px;}
+  .formsec{background:var(--cream);}
+  .formsec .wrap{max-width:480px;}
+  .card{background:#fff;border:2px solid var(--navy);box-shadow:6px 6px 0 var(--navy);padding:28px 24px;}
+  .card h2{color:var(--navy);font-size:1.5rem;line-height:1;margin:0 0 4px;text-transform:uppercase;}
+  .card .lede2{font-family:'Work Sans',sans-serif;font-size:14px;color:var(--ink-soft);margin:0 0 20px;line-height:1.5;}
+  .frow label.q{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);display:block;margin-bottom:4px;line-height:1.5;}
+  .frow>label{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);display:block;margin-bottom:7px;}
+  .hint{display:block;font-family:'Work Sans',sans-serif;font-weight:500;font-size:12px;text-transform:none;letter-spacing:0;color:var(--ink-soft);margin-bottom:10px;}
+  .checks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+  .chk{position:relative;cursor:pointer;}
+  .chk input{position:absolute;opacity:0;pointer-events:none;}
+  .chk span{display:block;text-align:center;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;color:var(--navy);background:var(--cream);border:2px solid var(--navy);padding:14px 8px;transition:.12s;}
+  .chk input:checked+span{background:var(--navy);color:#fff;}
+  .chk input:focus-visible+span{box-shadow:3px 3px 0 var(--red);}
+  .note{font-family:'Work Sans',sans-serif;font-size:13px;color:var(--navy);background:var(--pink);border:2px solid var(--navy);padding:12px 14px;margin:18px 0 0;line-height:1.5;}
+  .privacy{font-family:'Work Sans',sans-serif;font-size:12px;color:var(--ink-soft);line-height:1.5;margin:16px 0 0;}
+  .kthanks{text-align:center;}
+  .kthanks h2{color:var(--navy);font-size:1.7rem;margin:0 0 6px;text-transform:uppercase;}
+  .kthanks .tmsg{font-family:'Work Sans',sans-serif;font-size:15px;color:#4A5360;margin:0 0 20px;line-height:1.5;}
+  .cta-ig{display:inline-block;font-family:'Space Mono',monospace;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:13px;padding:14px 22px;background:var(--navy);color:#fff;border:2px solid var(--navy);text-decoration:none;}
+
+  .about{background:#fff;border-top:3px solid var(--navy);}
+  .about .wrap{max-width:620px;}
+  .about .kick{font-family:'Space Mono',monospace;color:var(--red);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:10px;}
+  .about h2{color:var(--navy);font-size:clamp(1.6rem,5vw,2.1rem);line-height:1;margin:0 0 14px;text-transform:uppercase;}
+  .about p{font-family:'Work Sans',sans-serif;color:var(--ink-soft);font-size:15px;line-height:1.6;margin:0 0 16px;max-width:560px;}
+  .vlist{list-style:none;margin:20px 0 0;padding:0;}
+  .vlist li{font-family:'Work Sans',sans-serif;font-weight:700;font-size:15px;color:var(--navy);margin:9px 0;display:flex;align-items:center;gap:10px;}
+  .vlist .st{color:var(--red);font-size:18px;line-height:1;}
 </style>
 </head><body>
-<header class="fhero center"><div class="wrap">
+
+<header class="fhero"><div class="wrap">
   <div class="fhead">
     <span class="brand">F45 W&#257;naka</span>
     <img class="badge" src="/img/f45-badge.png" alt="F45 &mdash; Team Training, Life Changing" width="500" height="500">
   </div>
   <div class="fpill">Launching 2027</div>
   <h1>Kids Movement<br>Program</h1>
-  <p class="sub">We're bringing F45 to kids next year.</p>
+  <p class="sub">We're building a kids program for W&#257;naka families. Tell us you're keen and help us shape it.</p>
 </div></header>
-<section class="stubsec"><div class="wrap">
-  <p class="big">It's built around:</p>
-  <ul class="pillars">
+
+<section class="formsec"><div class="wrap">
+  <div class="formwrap">
+    <div class="card">
+      <form class="kform" novalidate>
+        <h2>Register your interest</h2>
+        <p class="lede2">No commitment, just lets us know there's genuine interest and keeps you in the loop.</p>
+        <div class="frow"><label>First name</label><input name="firstName" type="text" autocomplete="given-name" required></div>
+        <div class="frow"><label>Last name</label><input name="lastName" type="text" autocomplete="family-name" required></div>
+        <div class="frow"><label>Phone number</label><input name="phone" type="tel" autocomplete="tel" required></div>
+        <div class="frow"><label>Email</label><input name="email" type="email" autocomplete="email" required></div>
+        <div class="frow">
+          <label class="q">What ages are the children you'd be interested in joining?</label>
+          <span class="hint">Select all that apply</span>
+          <div class="checks">
+            <label class="chk"><input type="checkbox" name="ages" value="Under 10"><span>Under 10</span></label>
+            <label class="chk"><input type="checkbox" name="ages" value="10-13"><span>10 &ndash; 13</span></label>
+            <label class="chk"><input type="checkbox" name="ages" value="13-15"><span>13 &ndash; 15</span></label>
+            <label class="chk"><input type="checkbox" name="ages" value="15+"><span>15+</span></label>
+          </div>
+        </div>
+        <p class="note">We'll be in touch with more questions as we build out this program, so we get it right for your family.</p>
+        <label class="consent" style="margin-top:18px;"><input type="checkbox" name="consent" value="true" required><span>I'm happy for F45 W&#257;naka to contact me about the Kids Movement Program.</span></label>
+        <div class="fhp"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+        <button type="submit" class="btn submit" style="width:100%;">Register my interest</button>
+        <div class="ferr"></div>
+        <p class="privacy">We'll only use these details to contact you about the Kids Movement Program as we build it. We won't share them with anyone else, and you can ask us to remove them at any time.</p>
+      </form>
+    </div>
+  </div>
+
+  <div class="kthanks" style="display:none;">
+    <div class="card">
+      <h2 class="ktitle">You're on the list.</h2>
+      <p class="tmsg">Thanks, we'll be in touch with more questions as we build this program for W&#257;naka families.</p>
+      <a class="cta-ig" href="https://www.instagram.com/f45_training_wanaka/" target="_blank" rel="noopener">Follow along on Instagram &#8594;</a>
+    </div>
+  </div>
+</div></section>
+
+<section class="about"><div class="wrap">
+  <div class="kick">What it's about</div>
+  <h2>Movement, the<br>right way, early.</h2>
+  <p>A program built to give W&#257;naka kids a strong, confident start with movement, led by our coaches in a space made for them.</p>
+  <ul class="vlist">
     <li><span class="st">&#9733;</span> Movement confidence</li>
     <li><span class="st">&#9733;</span> Body awareness</li>
     <li><span class="st">&#9733;</span> Safe gym habits</li>
   </ul>
-  <p class="big" style="font-size:15px;opacity:.9;margin-top:22px;">The interest form is being finished off now. Check back shortly, or come and chat to us at the stall.</p>
-  <a class="back" href="/twilightfair/">&#8592; Back to the fair</a>
 </div></section>
+
 <div class="foot"><div class="wrap">
 <div class="fbrand">F45 W&#257;naka</div>
 <div class="vals">Consistency, effort and connection.</div>
@@ -57,4 +117,31 @@
 <div class="fmuted">&copy; 2026 F45 W&#257;naka</div>
 </div></div>
 
+<script>
+document.querySelectorAll('form.kform').forEach(function(form){
+  var sec=form.closest('.wrap'), err=form.querySelector('.ferr'),
+      formwrap=sec.querySelector('.formwrap'), thanks=sec.querySelector('.kthanks'),
+      btn=form.querySelector('button[type=submit]');
+  form.addEventListener('submit',function(e){
+    e.preventDefault(); if(err){err.style.display='none';}
+    var g=function(n){var el=form.querySelector('[name="'+n+'"]');return el?el.value.trim():'';};
+    var ages=Array.prototype.slice.call(form.querySelectorAll('input[name="ages"]:checked')).map(function(c){return c.value;});
+    var data={firstName:g('firstName'),lastName:g('lastName'),phone:g('phone'),email:g('email'),ages:ages,consent:form.querySelector('input[name="consent"]').checked,company:g('company')};
+    if(!data.firstName||!data.lastName||!data.email||!data.phone){if(err){err.textContent='Please fill in your name, email and phone.';err.style.display='block';}return;}
+    if(!ages.length){if(err){err.textContent='Please pick at least one age group.';err.style.display='block';}return;}
+    if(!data.consent){if(err){err.textContent='Please tick the box so we can keep you posted.';err.style.display='block';}return;}
+    var old=btn.textContent; btn.disabled=true; btn.textContent='Sending...';
+    fetch('/api/kids',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})
+      .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j};});})
+      .then(function(res){
+        if(!res.ok||!res.j.ok){throw new Error((res.j&&res.j.error)||'Something went wrong.');}
+        if(formwrap){formwrap.style.display='none';}
+        var t=thanks.querySelector('.ktitle'); if(t){t.textContent='You’re on the list, '+data.firstName+'.';}
+        thanks.style.display='block';
+        window.scrollTo({top:0,behavior:'smooth'});
+      })
+      .catch(function(er){if(err){err.textContent=er.message||'Could not send. Please try again.';err.style.display='block';} btn.disabled=false; btn.textContent=old;});
+  });
+});
+</script>
 </body></html>
