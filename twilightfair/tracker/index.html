@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Move for the Movies Tracker &mdash; F45 W&#257;naka</title>
+<style>
+/* Layout: one page, three views on the hash (add, rides, display). Navy and cream, F45 Wanaka brand. */
+:root{
+  --navy:#1B2A46; --navy2:#22345A; --navy3:#3A4C73;
+  --red:#C33A2E; --mustard:#E3BE63; --pink:#E8ABB9;
+  --cream:#F3EAD6; --paper:#FFFFFF; --ink:#4A5568; --line:#D8CDB4; --mist:#C9D1E0;
+  --display:'Anton',Impact,'Arial Narrow',sans-serif;
+  --body:'Work Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Space Mono',ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--cream);color:var(--navy);font-family:var(--body);font-size:16px;line-height:1.35}
+body.is-display{background:var(--navy);color:var(--cream)}
+button,input,select{font-family:var(--body);font-size:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+body.is-display :focus-visible{outline-color:var(--mustard)}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+.mono{font-family:var(--mono)}
+.label{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+
+/* app shell for phones and iPads */
+.top{background:var(--navy);color:var(--cream)}
+.top-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px}
+.top h1{margin:0;font-family:var(--display);font-weight:400;font-size:26px;letter-spacing:1px;line-height:1}
+.pill{font-size:13px;font-weight:700;padding:5px 10px;background:var(--cream);color:var(--navy);white-space:nowrap}
+.pill.warn{background:var(--mustard)}
+.pill.bad{background:var(--pink)}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.tabs a{display:flex;align-items:center;justify-content:center;min-height:48px;color:var(--cream);text-decoration:none;font-weight:700;border-top:4px solid var(--navy)}
+.tabs a[aria-current="page"]{color:var(--mustard);border-top-color:var(--mustard)}
+.app{max-width:560px;margin:0 auto}
+.panel{padding-block:14px 28px;display:flex;flex-direction:column;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.row2{display:flex;gap:10px}
+.row2>*{flex:1;min-width:0}
+.pods{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.teachers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.chip{min-height:48px;border:2px solid var(--navy);background:var(--paper);font-weight:700;padding:0 4px;font-size:17px}
+.chip[aria-pressed="true"]{background:var(--navy);color:var(--cream)}
+.teachers .chip{border-color:var(--red)}
+.teachers .chip[aria-pressed="true"]{background:var(--red);color:#fff}
+.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:2px solid var(--navy)}
+.seg button{min-height:48px;border:0;background:var(--paper);font-weight:700}
+.seg button+button{border-left:2px solid var(--navy)}
+.seg button[aria-pressed="true"]{background:var(--navy);color:var(--cream)}
+.input{min-height:52px;border:2px solid var(--navy);background:var(--paper);padding:0 12px;font-size:20px;width:100%}
+.input.big{min-height:72px;font-family:var(--display);font-size:44px}
+select.input{font-size:17px}
+.note{padding:8px 12px;font-size:15px;line-height:1.3;background:var(--paper);border:2px solid var(--line)}
+.note.info{background:var(--mustard);border-color:var(--mustard)}
+.note.stop{background:var(--pink);border-color:var(--pink)}
+.go{min-height:60px;border:0;background:var(--red);color:#fff;font-family:var(--display);font-size:28px;letter-spacing:1px;width:100%;padding:0 10px}
+.go[disabled]{opacity:.5;cursor:not-allowed}
+.ghost{min-height:48px;border:2px solid var(--navy);background:var(--cream);font-weight:700;padding:0 14px}
+.danger{min-height:48px;border:2px solid var(--red);background:var(--paper);color:var(--red);font-weight:700;padding:0 14px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--navy);color:var(--cream);padding:12px 16px;font-weight:600;max-width:calc(100% - 32px);z-index:20}
+.stats{display:flex;gap:8px}
+.stat{flex:1;background:var(--paper);border:2px solid var(--navy);padding:8px 12px}
+.stat b{display:block;font-family:var(--display);font-weight:400;font-size:32px;line-height:1.1}
+.stat span{font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--ink)}
+.rides{display:flex;flex-direction:column;gap:8px;padding:0;margin:0;list-style:none}
+.ride{background:var(--paper);border:2px solid var(--navy);padding:8px 12px;display:flex;align-items:center;gap:12px;min-height:58px}
+.ride .who{flex:1;min-width:0}
+.ride .who b{display:block;font-size:17px}
+.ride .who span{font-size:14px;color:var(--ink)}
+.ride .m{font-family:var(--display);font-size:28px;line-height:1}
+.ride .edit{min-width:48px;min-height:48px;border:2px solid var(--navy);background:var(--cream);font-weight:700}
+.sheet{background:var(--paper);border:3px solid var(--navy);padding:14px;display:flex;flex-direction:column;gap:12px}
+.sheet h2{margin:0;font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:1px}
+
+/* display view for the laptop */
+.disp{min-height:100vh;display:flex;flex-direction:column;gap:22px;padding-block:24px 28px}
+.d-head{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:20px}
+.f45{background:#fff;color:var(--navy);font-family:var(--display);font-size:30px;letter-spacing:1px;padding:6px 14px;line-height:1}
+.brand h2{margin:0;font-family:var(--display);font-weight:400;font-size:40px;line-height:1;letter-spacing:1px}
+.brand .sub{font-family:var(--mono);font-size:14px;letter-spacing:3px;color:var(--mustard)}
+.bigstats{display:flex;gap:40px;flex-wrap:wrap}
+.bigstat{display:flex;flex-direction:column;align-items:flex-end}
+.bigstat .label{color:var(--pink);font-size:13px}
+.bigstat b{font-family:var(--display);font-weight:400;font-size:64px;line-height:1}
+.bigstat.gold b{color:var(--mustard)}
+.cols{display:flex;gap:28px;flex-wrap:wrap;align-items:stretch}
+.card-class{flex:999 1 640px;min-width:0;background:var(--navy2);padding:22px 28px 24px;display:flex;flex-direction:column;gap:12px}
+.card-class h3,.card-pod h3{margin:0;font-family:var(--display);font-weight:400;letter-spacing:1px}
+.card-class h3{font-size:34px}
+.cc-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.cc-head p{margin:0;color:var(--mist)}
+.bars{display:flex;flex-direction:column;gap:5px}
+.bar{display:grid;grid-template-columns:28px 54px minmax(90px,130px) minmax(0,1fr) 62px 74px;align-items:center;gap:12px}
+.bar .rank{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--mist)}
+.bar .pod{font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:1px;background:var(--cream);color:var(--navy);text-align:center;padding:3px 0}
+.bar .nm{font-size:18px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .track{background:var(--navy);height:28px}
+.bar .fill{height:28px;min-width:0;transition:width .6s ease}
+.bar .ct{text-align:right;font-family:var(--display);font-size:28px;line-height:1}
+.bar .now{background:var(--pink);color:var(--navy);font-family:var(--mono);font-weight:700;font-size:13px;padding:3px 6px;text-align:center}
+.side{flex:1 1 440px;min-width:0;display:flex;flex-direction:column;gap:28px}
+.card-pod{background:var(--cream);color:var(--navy);padding:20px 26px 22px;display:flex;flex-direction:column;gap:10px}
+.card-pod h3{font-size:30px}
+.pt{display:grid;grid-template-columns:54px minmax(0,1fr) minmax(0,1fr);font-size:17px}
+.pt .th{padding:4px 0;font-family:var(--mono);font-size:13px;letter-spacing:1px;color:var(--ink);border-bottom:2px solid var(--navy)}
+.pt .td{padding:8px 0;border-bottom:1px solid var(--line)}
+.pt .pn{font-family:var(--display);font-size:22px}
+.pt .cell{display:flex;justify-content:space-between;gap:8px;padding-right:10px}
+.pt .cell em{font-style:normal;font-family:var(--mono);font-weight:700}
+.pt .none{color:var(--ink)}
+.card-adult{background:var(--navy2);padding:16px 22px 18px;display:flex;flex-direction:column;gap:10px}
+.card-adult h3{margin:0;font-family:var(--display);font-weight:400;font-size:22px;letter-spacing:1px;color:var(--pink)}
+.adults{display:flex;gap:20px;flex-wrap:wrap}
+.adults>div{flex:1 1 160px;min-width:0;display:flex;flex-direction:column;gap:5px}
+.adults .label{color:var(--mist);font-size:12px}
+.adults .ar{display:flex;justify-content:space-between;gap:8px;font-size:16px}
+.adults .ar em{font-style:normal;font-family:var(--mono);font-weight:700;color:var(--mustard)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--navy3);padding-top:14px;margin-top:auto}
+.foot b{font-weight:600}
+.foot span{color:var(--mist)}
+.empty{color:var(--mist);font-size:18px;padding:6px 0 2px}
+.banner{background:var(--pink);color:var(--navy);padding:12px 16px;font-weight:600}
+@media (max-width:700px){
+  .bar{grid-template-columns:24px 46px minmax(0,1fr) 54px;row-gap:4px}
+  .bar .track{grid-column:1 / -1;order:5}
+  .bar .now{display:none}
+  .bigstat b{font-size:48px}
+  .brand h2{font-size:32px}
+}
+@media (prefers-reduced-motion:reduce){.bar .fill{transition:none}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap">
+</head>
+<body>
+
+<div id="banner" class="banner" hidden></div>
+
+<!-- ADD + RIDES shell -->
+<div id="shell" class="app-shell">
+  <header class="top">
+    <div class="app">
+      <div class="wrap">
+        <div class="top-row">
+          <h1 id="shell-title">ADD A RIDE</h1>
+          <span id="sync" class="pill">Connecting</span>
+        </div>
+      </div>
+      <nav class="tabs" aria-label="Views">
+        <a href="#add" id="tab-add">Add</a>
+        <a href="#rides" id="tab-rides">Rides</a>
+        <a href="#display" id="tab-display">Display</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app">
+    <div class="wrap">
+
+      <section id="v-add" class="panel" aria-label="Add a ride">
+        <form id="add-form" class="panel" style="padding:0" autocomplete="off" novalidate>
+          <div class="field">
+            <div class="label">1. Pod and teacher</div>
+            <div id="a-pods" class="pods" role="group" aria-label="Pod"></div>
+            <div id="a-teachers" class="teachers" role="group" aria-label="Teacher"></div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <div class="label">2. Who</div>
+              <div class="seg" role="group" aria-label="Student or parent">
+                <button type="button" id="a-student" aria-pressed="true">Student</button>
+                <button type="button" id="a-parent" aria-pressed="false">Parent</button>
+              </div>
+            </div>
+            <div class="field">
+              <div class="label" id="a-sexlabel">3. Boy or girl</div>
+              <div class="seg" role="group" aria-labelledby="a-sexlabel">
+                <button type="button" id="a-m" aria-pressed="true">Boy</button>
+                <button type="button" id="a-f" aria-pressed="false">Girl</button>
+              </div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field" style="flex:3">
+              <label class="label" for="a-first">4. First name</label>
+              <input id="a-first" class="input" type="text" inputmode="text" autocapitalize="words" placeholder="Ava">
+            </div>
+            <div class="field" style="flex:1">
+              <label class="label" for="a-init">Last initial</label>
+              <input id="a-init" class="input" type="text" inputmode="text" autocapitalize="characters" maxlength="1" placeholder="M" style="text-align:center;text-transform:uppercase">
+            </div>
+          </div>
+          <div id="a-note" class="note" hidden></div>
+          <div class="field">
+            <label class="label" for="a-metres">5. Metres</label>
+            <input id="a-metres" class="input big" type="text" inputmode="numeric" pattern="[0-9]*" placeholder="0">
+          </div>
+          <div id="a-err" class="note stop" role="alert" hidden></div>
+          <button id="a-go" class="go" type="submit">ADD RIDE</button>
+        </form>
+      </section>
+
+      <section id="v-rides" class="panel" aria-label="Rides" hidden>
+        <div class="stats">
+          <div class="stat"><b id="r-riders">0</b><span>RIDERS</span></div>
+          <div class="stat"><b id="r-rides">0</b><span>RIDES</span></div>
+        </div>
+        <div id="r-sheet" class="sheet" hidden></div>
+        <p style="margin:0;font-size:14px;color:var(--ink)">Latest first. Tap Edit to fix a name, class or metres, or to remove a ride.</p>
+        <ul id="r-list" class="rides"></ul>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- DISPLAY for the laptop -->
+<div id="v-display" class="wrap" hidden>
+  <div class="disp">
+    <div class="d-head">
+      <div class="brand">
+        <div class="f45" aria-label="F45">F45</div>
+        <div>
+          <h2>CLASS VS CLASS</h2>
+          <div class="sub">MOVE FOR THE MOVIES</div>
+        </div>
+      </div>
+      <div class="bigstats">
+        <div class="bigstat"><span class="label">Riders so far</span><b id="d-riders">0</b></div>
+        <div class="bigstat gold"><span class="label">Raised for the school</span><b id="d-raised">$0</b></div>
+      </div>
+    </div>
+
+    <div class="cols">
+      <section class="card-class" aria-label="Riders per class">
+        <div class="cc-head"><h3>RIDERS PER CLASS</h3><p>Every rider scores a point. Most riders wins the movies.</p></div>
+        <div id="d-empty" class="empty" hidden>No riders yet. The first ride gets the board moving.</div>
+        <div id="d-bars" class="bars"></div>
+      </section>
+
+      <div class="side">
+        <section class="card-pod" aria-label="Fastest in each Pod">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px"><h3>FASTEST IN EACH POD</h3><span style="color:var(--ink)">Metres</span></div>
+          <div id="d-pods" class="pt"></div>
+        </section>
+        <section class="card-adult" aria-label="Top adults">
+          <h3>TOP ADULTS</h3>
+          <div class="adults">
+            <div><div class="label">Male</div><div id="d-male"></div></div>
+            <div><div class="label">Female</div><div id="d-female"></div></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="foot">
+      <b>Thanks to Cinema Paradiso for backing W&#257;naka Primary.</b>
+      <span>We help parents who prioritise their health make time for movement.</span>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ======================================================================
+   CONFIG — set ENDPOINT to your Apps Script Web app URL (ends in /exec).
+   Until it is set, the page hosts and renders but does not save rides.
+   ====================================================================== */
+var CONFIG = {
+  ENDPOINT: '',      // <-- paste the Apps Script /exec URL here
+  POLL_MS: 3000,     // how often the board refreshes from the sheet
+  SECRET: ''         // optional; must match the SECRET script property if used
+};
+
+var ROSTER = {
+  1:['Megan','Sophie','Sara'],
+  2:['Sharon','Charlotte','Jen'],
+  3:['Megan','Ben','Andrena','Casey'],
+  4:['Kylie','Robyn','Danielle'],
+  5:['Anne','Coral','Lisa'],
+  6:['Karina','David','Petra'],
+  7:['Anna','Charlotte','Kath']
+};
+var POD_IDS = [1,2,3,4,5,6,7];
+var CLASSES = [];
+POD_IDS.forEach(function(p){ ROSTER[p].forEach(function(t,i){ CLASSES.push({id:'p'+p+'t'+i, pod:p, ti:i, name:t}); }); });
+var CLASS_BY_ID = {}; CLASSES.forEach(function(c){ CLASS_BY_ID[c.id]=c; });
+
+var MAX_TRIES = 3;
+var PRICE_PER_RIDE = 1;
+var QUEUE_KEY = 'm4m-queue';
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"']/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function norm(s){ return String(s).toLowerCase().replace(/[^a-z0-9]/g,''); }
+function cap(s){ return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase(); }
+
+function dn(s){ return String(s||'').replace(/\./g,''); }
+function buildName(firstRaw, initRaw){
+  var first = String(firstRaw||'').trim().replace(/\s+/g,' ').split(' ').map(cap).join(' ');
+  var ini = String(initRaw||'').trim().replace(/[^A-Za-z]/g,'').charAt(0).toUpperCase();
+  if(!first || !ini || !norm(first)) return null;
+  return { display:first+' '+ini, key:norm(first)+norm(ini) };
+}
+function splitName(full){
+  var parts = dn(full).trim().split(' ');
+  var ini = parts.length>1 ? parts.pop() : '';
+  return { first:parts.join(' '), init:ini };
+}
+function rideKey(cid, who, nameKey){ return cid+'|'+who+'|'+nameKey; }
+
+// ---------- data layer: Google Sheet via Apps Script web app ----------
+// Mimics the small surface the app uses: collection().doc().set()/delete()
+// and collection().orderBy().limit().onSnapshot(). "Realtime" is a poll.
+function createSheetDb(cfg){
+  var subs = [];
+  function toSnap(rides){
+    return {
+      docs: rides.map(function(x){ return { id:x.id, data:function(){ var c=Object.assign({},x); delete c.id; return c; } }; }),
+      metadata:{ hasPendingWrites:false, fromCache:false }
+    };
+  }
+  function fetchRides(){
+    var url = cfg.ENDPOINT + (cfg.ENDPOINT.indexOf('?')>-1?'&':'?') + 't=' + Date.now();
+    return fetch(url, { method:'GET' }).then(function(r){ return r.json(); }).then(function(j){
+      var rides = (j && j.rides) || [];
+      rides.forEach(function(r){ r.m=Number(r.m)||0; r.ts=Number(r.ts)||0; r.pod=Number(r.pod)||0; r.ti=Number(r.ti)||0; });
+      rides.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+      var snap = toSnap(rides);
+      subs.forEach(function(fn){ try{ fn(snap); }catch(e){} });
+      return rides;
+    });
+  }
+  function post(action, payload){
+    // text/plain avoids a CORS preflight the Apps Script cannot answer
+    return fetch(cfg.ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(Object.assign({ action:action, secret:cfg.SECRET }, payload)) })
+      .then(function(r){ return r.json(); })
+      .then(function(j){ if(!j || j.ok!==true) throw new Error((j&&j.error)||'save failed'); return j; });
+  }
+  var coll = {
+    doc: function(id){ return {
+      set: function(data){ return post('set', { id:id, ride:data }).then(function(){ return fetchRides(); }); },
+      delete: function(){ return post('delete', { id:id }).then(function(){ return fetchRides(); }); }
+    };},
+    orderBy: function(){ return coll; },
+    limit: function(){ return coll; },
+    onSnapshot: function(onNext, onErr){
+      subs.push(onNext);
+      fetchRides().catch(function(){ /* keep retrying on the interval */ });
+      setInterval(function(){ fetchRides().catch(function(){}); }, cfg.POLL_MS);
+    }
+  };
+  return { collection: function(){ return coll; } };
+}
+
+// ---------- state ----------
+var db = null;
+var dbRides = [];          // from the store
+var queue = [];            // rides saved on this device and waiting to reach the store
+var snapMeta = { pending:false, cache:true };
+var loaded = false;
+var flash = {};            // classId -> expiry time
+var knownRiders = null;    // set of rider keys seen so far
+var form = { pod:3, ti:0, who:'s', sex:'m' };
+var editing = null;        // ride being edited
+
+function loadQueue(){
+  try{ var s = localStorage.getItem(QUEUE_KEY); queue = s ? JSON.parse(s) : []; if(!Array.isArray(queue)) queue=[]; }catch(e){ queue=[]; }
+}
+function saveQueue(){ try{ localStorage.setItem(QUEUE_KEY, JSON.stringify(queue)); }catch(e){} }
+
+function allRides(){
+  var seen = {}, out = [];
+  dbRides.forEach(function(r){ seen[r.id]=1; out.push(r); });
+  queue.forEach(function(q){ if(!seen[q.id]) out.push(Object.assign({waiting:true}, q.data, {id:q.id})); });
+  out.sort(function(a,b){ return (b.ts||0)-(a.ts||0); });
+  return out;
+}
+
+function aggregate(rides){
+  var riders = {};
+  rides.forEach(function(r){
+    var k = r.rk; if(!k || !CLASS_BY_ID[r.cid]) return;
+    var x = riders[k];
+    if(!x){ x = riders[k] = { rk:k, name:dn(r.name), cid:r.cid, who:r.who, sex:r.sex, best:0, bestTs:0, firstTs:r.ts, tries:0 }; }
+    x.tries++;
+    if(r.ts < x.firstTs) x.firstTs = r.ts;
+    if(r.m > x.best){ x.best = r.m; x.bestTs = r.ts; }
+    else if(r.m === x.best && r.ts < x.bestTs){ x.bestTs = r.ts; }
+  });
+  var counts = {}; CLASSES.forEach(function(c){ counts[c.id]=0; });
+  var reached = {}; CLASSES.forEach(function(c){ reached[c.id]=0; }); // ts the class reached its current count (tie-break: earlier wins)
+  var podBest = {}; POD_IDS.forEach(function(p){ podBest[p]={m:null,f:null}; });
+  var adults = { m:[], f:[] };
+  Object.keys(riders).forEach(function(k){
+    var x = riders[k]; counts[x.cid]++;
+    if(x.firstTs > reached[x.cid]) reached[x.cid] = x.firstTs;
+    if(x.who==='s'){
+      var pod = CLASS_BY_ID[x.cid].pod, slot = podBest[pod][x.sex];
+      if(!slot || x.best>slot.best || (x.best===slot.best && x.bestTs<slot.bestTs)) podBest[pod][x.sex] = x;
+    } else { adults[x.sex].push(x); }
+  });
+  adults.m.sort(function(a,b){ return b.best-a.best || a.bestTs-b.bestTs; });
+  adults.f.sort(function(a,b){ return b.best-a.best || a.bestTs-b.bestTs; });
+  return { riders:riders, counts:counts, reached:reached, podBest:podBest, adults:adults, riderCount:Object.keys(riders).length, rideCount:rides.length };
+}
+
+// ---------- routing ----------
+function route(){
+  var h = (location.hash||'').replace('#','');
+  var v = (h==='rides'||h==='display') ? h : 'add';
+  var disp = v==='display';
+  document.body.classList.toggle('is-display', disp);
+  $('v-display').hidden = !disp;
+  $('shell').hidden = disp;
+  $('v-add').hidden = v!=='add';
+  $('v-rides').hidden = v!=='rides';
+  $('shell-title').textContent = v==='rides' ? 'RIDES' : 'ADD A RIDE';
+  ['add','rides','display'].forEach(function(n){
+    var a = $('tab-'+n); if(n===v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+  });
+  renderAll();
+}
+
+// ---------- add view ----------
+function buildPods(){
+  var box = $('a-pods'); box.innerHTML='';
+  POD_IDS.forEach(function(p){
+    var b = document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=p;
+    b.setAttribute('aria-label','Pod '+p); b.setAttribute('aria-pressed', String(form.pod===p));
+    b.addEventListener('click', function(){ form.pod=p; form.ti=0; buildPods(); buildTeachers(); updateNote(); });
+    box.appendChild(b);
+  });
+}
+function buildTeachers(){
+  var box = $('a-teachers'); box.innerHTML='';
+  ROSTER[form.pod].forEach(function(t,i){
+    var b = document.createElement('button'); b.type='button'; b.className='chip'; b.textContent=t;
+    b.setAttribute('aria-pressed', String(form.ti===i));
+    b.addEventListener('click', function(){ form.ti=i; buildTeachers(); updateNote(); });
+    box.appendChild(b);
+  });
+  $('a-go').textContent = 'ADD RIDE FOR '+ROSTER[form.pod][form.ti].toUpperCase()+' (POD '+form.pod+')';
+}
+function setWho(w){
+  form.who = w;
+  $('a-student').setAttribute('aria-pressed', String(w==='s'));
+  $('a-parent').setAttribute('aria-pressed', String(w==='p'));
+  var stu = w==='s';
+  $('a-sexlabel').textContent = stu ? '3. Boy or girl' : '3. Male or female';
+  $('a-m').textContent = stu ? 'Boy' : 'Male';
+  $('a-f').textContent = stu ? 'Girl' : 'Female';
+  updateNote();
+}
+function setSex(s){
+  form.sex = s;
+  $('a-m').setAttribute('aria-pressed', String(s==='m'));
+  $('a-f').setAttribute('aria-pressed', String(s==='f'));
+}
+function curClass(){ return CLASSES.filter(function(c){ return c.pod===form.pod && c.ti===form.ti; })[0]; }
+
+function triesFor(rk){
+  var n = 0; allRides().forEach(function(r){ if(r.rk===rk) n++; }); return n;
+}
+function updateNote(){
+  var note = $('a-note'), nm = buildName($('a-first').value, $('a-init').value);
+  note.className = 'note'; note.hidden = true;
+  if(!nm) return;
+  var c = curClass(), rk = rideKey(c.id, form.who, nm.key), n = triesFor(rk);
+  note.hidden = false;
+  if(n===0){ note.textContent = nm.display+' is a new rider for '+c.name+' (Pod '+c.pod+').'; return; }
+  if(form.who==='p'){ note.className='note stop'; note.textContent = nm.display+' has already ridden. Parents get one ride.'; return; }
+  if(n>=MAX_TRIES){ note.className='note stop'; note.textContent = nm.display+' has had '+MAX_TRIES+' tries. The best stays on the board.'; return; }
+  note.className='note info';
+  note.innerHTML = '<b>'+esc(nm.display)+' has ridden before.</b> Try '+(n+1)+' of '+MAX_TRIES+'. Best metres count. Still one rider for the class.';
+}
+function showErr(msg){ var e=$('a-err'); if(msg){ e.textContent=msg; e.hidden=false; } else { e.hidden=true; } }
+var toastTimer=null;
+function toast(msg){
+  var t=$('toast'); t.textContent=msg; t.hidden=false;
+  clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.hidden=true; },4500);
+}
+function newId(){ return 'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+
+function submitRide(e){
+  e.preventDefault(); showErr('');
+  var nm = buildName($('a-first').value, $('a-init').value);
+  if(!nm){ showErr('Enter a first name and a last initial.'); ($('a-first').value.trim() ? $('a-init') : $('a-first')).focus(); return; }
+  var m = parseInt(String($('a-metres').value).replace(/[^0-9]/g,''),10);
+  if(!m || m<20 || m>1500){ showErr('Check the metres. Enter a number from 20 to 1500.'); $('a-metres').focus(); return; }
+  var c = curClass(), rk = rideKey(c.id, form.who, nm.key), n = triesFor(rk);
+  if(n>0 && form.who==='p'){ showErr(nm.display+' has already ridden. Parents get one ride.'); return; }
+  if(n>=MAX_TRIES){ showErr(nm.display+' has had '+MAX_TRIES+' tries already.'); return; }
+  var data = { rk:rk, name:nm.display, cid:c.id, pod:c.pod, ti:c.ti, who:form.who, sex:form.sex, m:m, ts:Date.now() };
+  var wasNew = n===0, id = newId();
+  $('a-first').value=''; $('a-init').value=''; $('a-metres').value=''; updateNote();
+  sendRide(id, data);
+  var after = aggregate(allRides()).counts[c.id];
+  toast('Added '+nm.display+' '+m+'m. '+c.name+' (Pod '+c.pod+') now has '+after+' rider'+(after===1?'':'s')+(wasNew?'.':' (no extra point).'));
+  $('a-first').focus();
+}
+
+function sendRide(id, data){
+  queue.push({ id:id, data:data }); saveQueue(); renderStatus(); updateNote();
+  flushQueue();
+}
+var flushing=false;
+function flushQueue(){
+  if(!db || flushing || !queue.length) return;
+  flushing=true;
+  var item = queue[0];
+  db.collection('rides').doc(item.id).set(item.data).then(function(){
+    queue = queue.filter(function(q){ return q.id!==item.id; }); saveQueue();
+    flushing=false; renderStatus(); flushQueue();
+  }, function(err){
+    flushing=false; renderStatus();
+    if(err && err.code==='invalid_argument'){ queue = queue.filter(function(q){ return q.id!==item.id; }); saveQueue(); flushQueue(); }
+  });
+}
+setInterval(function(){ if(queue.length) flushQueue(); }, 5000);
+window.addEventListener('online', function(){ renderStatus(); flushQueue(); });
+window.addEventListener('offline', renderStatus);
+
+function renderStatus(){
+  var p = $('sync'); p.className='pill';
+  if(!db){ p.textContent='Not connected'; p.classList.add('bad'); return; }
+  if(queue.length){ p.textContent = queue.length+' waiting to save'; p.classList.add('warn'); return; }
+  if(navigator.onLine===false){ p.textContent='Offline'; p.classList.add('bad'); return; }
+  if(!loaded || snapMeta.pending){ p.textContent='Saving'; p.classList.add('warn'); return; }
+  p.textContent='Saved';
+}
+
+// ---------- rides view ----------
+function classLabel(r){ var c = CLASS_BY_ID[r.cid]; return c ? 'Pod '+c.pod+' · '+c.name : 'Unknown class'; }
+function whoLabel(r){
+  var stu = r.who==='s';
+  return (stu?'Student':'Parent')+' · '+(r.sex==='m' ? (stu?'Boy':'Male') : (stu?'Girl':'Female'));
+}
+function renderRides(){
+  var rides = allRides(), agg = aggregate(rides);
+  $('r-riders').textContent = agg.riderCount;
+  $('r-rides').textContent = agg.rideCount;
+  var tries = {}; // try number per ride, oldest first
+  var asc = rides.slice().sort(function(a,b){ return (a.ts||0)-(b.ts||0); });
+  var seen = {};
+  asc.forEach(function(r){ seen[r.rk]=(seen[r.rk]||0)+1; tries[r.id]=seen[r.rk]; });
+  var ul = $('r-list'); ul.innerHTML='';
+  if(!rides.length){
+    var li = document.createElement('li'); li.className='note'; li.textContent='No rides yet. Add the first one on the Add tab.'; ul.appendChild(li); return;
+  }
+  rides.slice(0,80).forEach(function(r){
+    var li = document.createElement('li'); li.className='ride';
+    var tryTxt = (r.who==='s' && tries[r.id]) ? ' · try '+tries[r.id] : '';
+    li.innerHTML = '<div class="who"><b>'+esc(dn(r.name))+(r.waiting?' (waiting)':'')+'</b><span>'+esc(classLabel(r))+' · '+esc(whoLabel(r))+esc(tryTxt)+'</span></div><div class="m">'+esc(r.m)+'</div>';
+    var b = document.createElement('button'); b.type='button'; b.className='edit'; b.textContent='Edit'; b.setAttribute('aria-label','Edit ride for '+dn(r.name));
+    b.addEventListener('click', function(){ openSheet(r); });
+    li.appendChild(b); ul.appendChild(li);
+  });
+}
+function openSheet(r){
+  var sn = splitName(r.name);
+  editing = { id:r.id, ts:r.ts, waiting:!!r.waiting, confirm:false, f:{ first:sn.first, init:sn.init, cid:r.cid, who:r.who, sex:r.sex, m:String(r.m) } };
+  renderSheet();
+  $('r-sheet').scrollIntoView({block:'nearest'});
+}
+function renderSheet(){
+  var s = $('r-sheet');
+  if(!editing){ s.hidden=true; s.innerHTML=''; return; }
+  var f = editing.f;
+  var opts = CLASSES.map(function(c){ return '<option value="'+c.id+'"'+(c.id===f.cid?' selected':'')+'>Pod '+c.pod+' · '+esc(c.name)+'</option>'; }).join('');
+  s.hidden=false;
+  s.innerHTML =
+   '<h2>FIX THIS RIDE</h2>'+
+   '<div class="row2"><div class="field" style="flex:3"><label class="label" for="e-first">First name</label><input id="e-first" class="input" type="text" value="'+esc(f.first)+'"></div><div class="field" style="flex:1"><label class="label" for="e-init">Last initial</label><input id="e-init" class="input" type="text" maxlength="1" value="'+esc(f.init)+'" style="text-align:center;text-transform:uppercase"></div></div>'+
+   '<div class="field"><label class="label" for="e-class">Class</label><select id="e-class" class="input">'+opts+'</select></div>'+
+   '<div class="row2"><div class="field"><label class="label" for="e-who">Who</label><select id="e-who" class="input"><option value="s"'+(f.who==='s'?' selected':'')+'>Student</option><option value="p"'+(f.who==='p'?' selected':'')+'>Parent</option></select></div>'+
+   '<div class="field"><label class="label" for="e-sex">Boy or girl / male or female</label><select id="e-sex" class="input"><option value="m"'+(f.sex==='m'?' selected':'')+'>Boy / male</option><option value="f"'+(f.sex==='f'?' selected':'')+'>Girl / female</option></select></div></div>'+
+   '<div class="field"><label class="label" for="e-m">Metres</label><input id="e-m" class="input" type="text" inputmode="numeric" value="'+esc(f.m)+'"></div>'+
+   '<div id="e-err" class="note stop" role="alert" hidden></div>'+
+   '<div class="row2"><button type="button" class="go" id="e-save" style="font-size:22px">SAVE</button><button type="button" class="ghost" id="e-cancel">Cancel</button></div>'+
+   (editing.waiting ? '<div class="note">This ride is still waiting to save. Edit it after it has saved.</div>' :
+     (editing.confirm ? '<div class="row2"><button type="button" class="danger" id="e-del2">Yes, remove this ride</button><button type="button" class="ghost" id="e-keep">Keep it</button></div>'
+                      : '<button type="button" class="danger" id="e-del">Remove ride</button>'));
+  function grab(){ f.first=$('e-first').value; f.init=$('e-init').value; f.cid=$('e-class').value; f.who=$('e-who').value; f.sex=$('e-sex').value; f.m=$('e-m').value; }
+  $('e-cancel').addEventListener('click', function(){ editing=null; renderSheet(); });
+  $('e-save').addEventListener('click', function(){
+    grab();
+    var nm = buildName(f.first, f.init), m = parseInt(String(f.m).replace(/[^0-9]/g,''),10), err=$('e-err');
+    if(!nm){ err.textContent='Enter a first name and a last initial.'; err.hidden=false; return; }
+    if(!m || m<20 || m>1500){ err.textContent='Check the metres (20 to 1500).'; err.hidden=false; return; }
+    if(editing.waiting){ err.textContent='Wait until this ride has saved.'; err.hidden=false; return; }
+    var c = CLASS_BY_ID[f.cid];
+    var data = { rk:rideKey(c.id, f.who, nm.key), name:nm.display, cid:c.id, pod:c.pod, ti:c.ti, who:f.who, sex:f.sex, m:m, ts:editing.ts };
+    if(db){ db.collection('rides').doc(editing.id).set(data).then(function(){ toast('Ride updated.'); }, function(){ toast('Could not save. Try again.'); }); }
+    editing=null; renderSheet();
+  });
+  var del = $('e-del'), del2 = $('e-del2'), keep = $('e-keep');
+  if(del) del.addEventListener('click', function(){ grab(); editing.confirm=true; renderSheet(); });
+  if(keep) keep.addEventListener('click', function(){ grab(); editing.confirm=false; renderSheet(); });
+  if(del2) del2.addEventListener('click', function(){
+    if(db){ db.collection('rides').doc(editing.id).delete().then(function(){ toast('Ride removed.'); }, function(){ toast('Could not remove. Try again.'); }); }
+    editing=null; renderSheet();
+  });
+}
+
+// ---------- display view ----------
+var flashTimer=null;
+function renderDisplay(){
+  var agg = aggregate(allRidesDisplay()), now = Date.now();
+  $('d-riders').textContent = agg.riderCount;
+  $('d-raised').textContent = '$'+(agg.rideCount*PRICE_PER_RIDE);
+  $('d-empty').hidden = agg.riderCount>0;
+  var list = CLASSES.map(function(c){ return { c:c, n:agg.counts[c.id] }; });
+  list.sort(function(a,b){ return b.n-a.n || (agg.reached[a.c.id]-agg.reached[b.c.id]) || a.c.pod-b.c.pod || a.c.ti-b.c.ti; });
+  var max = Math.max(1, list[0].n);
+  var html = '', anyFlash=false;
+  list.forEach(function(x,i){
+    var pct = x.n ? Math.max(2, Math.round(x.n/max*100)) : 0;
+    var color = x.n===0 ? 'var(--navy3)' : (i===0 ? 'var(--mustard)' : (i<3 ? 'var(--red)' : 'var(--pink)'));
+    var isNow = flash[x.c.id] && flash[x.c.id]>now; if(isNow) anyFlash=true;
+    html += '<div class="bar"><div class="rank">'+(i+1)+'</div><div class="pod">POD '+x.c.pod+'</div><div class="nm">'+esc(x.c.name)+'</div>'+
+            '<div class="track"><div class="fill" style="width:'+pct+'%;background:'+color+'"></div></div>'+
+            '<div class="ct">'+x.n+'</div><div>'+(isNow?'<div class="now">+1 NOW</div>':'')+'</div></div>';
+  });
+  $('d-bars').innerHTML = html;
+  clearTimeout(flashTimer);
+  if(anyFlash) flashTimer = setTimeout(renderDisplay, 1000);
+
+  var ph = '<div class="th">POD</div><div class="th">BOY</div><div class="th">GIRL</div>';
+  POD_IDS.forEach(function(p){
+    function cell(x){ return x ? '<div class="td"><div class="cell"><span style="font-weight:600">'+esc(x.name)+'</span><em>'+x.best+'</em></div></div>' : '<div class="td"><div class="cell none">-</div></div>'; }
+    ph += '<div class="td pn">'+p+'</div>'+cell(agg.podBest[p].m)+cell(agg.podBest[p].f);
+  });
+  $('d-pods').innerHTML = ph;
+  function adultRows(arr){
+    if(!arr.length) return '<div class="ar"><span style="color:var(--mist)">No parents yet</span></div>';
+    return arr.slice(0,3).map(function(x){ var c=CLASS_BY_ID[x.cid]; return '<div class="ar"><span>'+esc(x.name)+'</span><em>'+x.best+'</em></div>'; }).join('');
+  }
+  $('d-male').innerHTML = adultRows(agg.adults.m);
+  $('d-female').innerHTML = adultRows(agg.adults.f);
+}
+function allRidesDisplay(){ return dbRides; }
+
+// ---------- data wiring ----------
+function renderAll(){
+  renderStatus();
+  var h = (location.hash||'').replace('#','');
+  if(h==='display') renderDisplay();
+  else if(h==='rides') renderRides();
+  else updateNote();
+}
+
+function onRides(snap){
+  var rides = snap.docs.map(function(d){ var x = d.data(); x.id = d.id; return x; });
+  dbRides = rides;
+  snapMeta = { pending: snap.metadata.hasPendingWrites, cache: snap.metadata.fromCache };
+  var riders = aggregate(rides).riders;
+  if(knownRiders===null){ if(!snap.metadata.fromCache || rides.length) { knownRiders = {}; Object.keys(riders).forEach(function(k){ knownRiders[k]=1; }); } }
+  else {
+    Object.keys(riders).forEach(function(k){
+      if(!knownRiders[k]){ knownRiders[k]=1; flash[riders[k].cid] = Date.now()+10000; }
+    });
+  }
+  if(!snap.metadata.fromCache) loaded = true;
+  renderAll();
+}
+
+function setup(){
+  loadQueue();
+  buildPods(); buildTeachers(); setWho('s'); setSex('m');
+  $('a-student').addEventListener('click', function(){ setWho('s'); });
+  $('a-parent').addEventListener('click', function(){ setWho('p'); });
+  $('a-m').addEventListener('click', function(){ setSex('m'); });
+  $('a-f').addEventListener('click', function(){ setSex('f'); });
+  $('a-first').addEventListener('input', updateNote);
+  $('a-init').addEventListener('input', function(){ this.value = this.value.replace(/[^A-Za-z]/g,'').toUpperCase(); updateNote(); });
+  $('add-form').addEventListener('submit', submitRide);
+  window.addEventListener('hashchange', route);
+  route();
+  if(!CONFIG.ENDPOINT){ noEndpoint(); return; }
+  db = createSheetDb(CONFIG); renderStatus();
+  db.collection('rides').orderBy('ts','desc').limit(1000).onSnapshot(onRides, function(){});
+  flushQueue();
+}
+function noEndpoint(){
+  renderStatus();
+  var b = $('banner'); b.hidden=false;
+  b.textContent = 'Dashboard is hosted. Not yet connected to the rides sheet — add the Apps Script URL to CONFIG.ENDPOINT to start saving.';
+}
+setup();
+})();
+</script>
+</body>
+</html>
