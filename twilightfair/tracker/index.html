@@ -180,9 +180,9 @@ select.input{font-size:17px}
           <div class="row2">
             <div class="field">
               <div class="label">2. Who</div>
-              <div class="seg" role="group" aria-label="Student or parent">
+              <div class="seg" role="group" aria-label="Student or adult">
                 <button type="button" id="a-student" aria-pressed="true">Student</button>
-                <button type="button" id="a-parent" aria-pressed="false">Parent</button>
+                <button type="button" id="a-parent" aria-pressed="false">Adult</button>
               </div>
             </div>
             <div class="field">
@@ -485,7 +485,7 @@ function updateNote(){
   var c = curClass(), rk = rideKey(c.id, form.who, nm.key), n = triesFor(rk);
   note.hidden = false;
   if(n===0){ note.textContent = nm.display+' is a new rider for '+c.name+' (Pod '+c.pod+').'; return; }
-  if(form.who==='p'){ note.className='note stop'; note.textContent = nm.display+' has already ridden. Parents get one ride.'; return; }
+  if(form.who==='p'){ note.className='note stop'; note.textContent = nm.display+' has already ridden. Adults get one ride.'; return; }
   if(n>=MAX_TRIES){ note.className='note stop'; note.textContent = nm.display+' has had '+MAX_TRIES+' tries. The best stays on the board.'; return; }
   note.className='note info';
   note.innerHTML = '<b>'+esc(nm.display)+' has ridden before.</b> Try '+(n+1)+' of '+MAX_TRIES+'. Best metres count. Still one rider for the class.';
@@ -505,7 +505,7 @@ function submitRide(e){
   var m = parseInt(String($('a-metres').value).replace(/[^0-9]/g,''),10);
   if(!m || m<20 || m>1500){ showErr('Check the metres. Enter a number from 20 to 1500.'); $('a-metres').focus(); return; }
   var c = curClass(), rk = rideKey(c.id, form.who, nm.key), n = triesFor(rk);
-  if(n>0 && form.who==='p'){ showErr(nm.display+' has already ridden. Parents get one ride.'); return; }
+  if(n>0 && form.who==='p'){ showErr(nm.display+' has already ridden. Adults get one ride.'); return; }
   if(n>=MAX_TRIES){ showErr(nm.display+' has had '+MAX_TRIES+' tries already.'); return; }
   var data = { rk:rk, name:nm.display, cid:c.id, pod:c.pod, ti:c.ti, who:form.who, sex:form.sex, m:m, ts:Date.now() };
   var wasNew = n===0, id = newId();
@@ -550,7 +550,7 @@ function renderStatus(){
 function classLabel(r){ var c = CLASS_BY_ID[r.cid]; return c ? 'Pod '+c.pod+' · '+c.name : 'Unknown class'; }
 function whoLabel(r){
   var stu = r.who==='s';
-  return (stu?'Student':'Parent')+' · '+(r.sex==='m' ? (stu?'Boy':'Male') : (stu?'Girl':'Female'));
+  return (stu?'Student':'Adult')+' · '+(r.sex==='m' ? (stu?'Boy':'Male') : (stu?'Girl':'Female'));
 }
 function renderRides(){
   var rides = allRides(), agg = aggregate(rides);
@@ -589,7 +589,7 @@ function renderSheet(){
    '<h2>FIX THIS RIDE</h2>'+
    '<div class="row2"><div class="field" style="flex:3"><label class="label" for="e-first">First name</label><input id="e-first" class="input" type="text" value="'+esc(f.first)+'"></div><div class="field" style="flex:1"><label class="label" for="e-init">Last initial</label><input id="e-init" class="input" type="text" maxlength="1" value="'+esc(f.init)+'" style="text-align:center;text-transform:uppercase"></div></div>'+
    '<div class="field"><label class="label" for="e-class">Class</label><select id="e-class" class="input">'+opts+'</select></div>'+
-   '<div class="row2"><div class="field"><label class="label" for="e-who">Who</label><select id="e-who" class="input"><option value="s"'+(f.who==='s'?' selected':'')+'>Student</option><option value="p"'+(f.who==='p'?' selected':'')+'>Parent</option></select></div>'+
+   '<div class="row2"><div class="field"><label class="label" for="e-who">Who</label><select id="e-who" class="input"><option value="s"'+(f.who==='s'?' selected':'')+'>Student</option><option value="p"'+(f.who==='p'?' selected':'')+'>Adult</option></select></div>'+
    '<div class="field"><label class="label" for="e-sex">Boy or girl / male or female</label><select id="e-sex" class="input"><option value="m"'+(f.sex==='m'?' selected':'')+'>Boy / male</option><option value="f"'+(f.sex==='f'?' selected':'')+'>Girl / female</option></select></div></div>'+
    '<div class="field"><label class="label" for="e-m">Metres</label><input id="e-m" class="input" type="text" inputmode="numeric" value="'+esc(f.m)+'"></div>'+
    '<div id="e-err" class="note stop" role="alert" hidden></div>'+
@@ -652,7 +652,7 @@ function renderDisplay(){
   });
   $('d-pods').innerHTML = ph;
   function adultRows(arr){
-    if(!arr.length) return '<div class="ar"><span style="color:var(--mist)">No parents yet</span></div>';
+    if(!arr.length) return '<div class="ar"><span style="color:var(--mist)">No adults yet</span></div>';
     return arr.slice(0,3).map(function(x){ var c=CLASS_BY_ID[x.cid]; return '<div class="ar"><span>'+esc(x.name)+'</span><em>'+x.best+'</em></div>'; }).join('');
   }
   $('d-male').innerHTML = adultRows(agg.adults.m);
